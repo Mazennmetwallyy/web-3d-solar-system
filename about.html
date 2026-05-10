@@ -49,17 +49,23 @@
           <div class="about-section-title">What I built</div>
           <h2 class="about-heading">Project Overview</h2>
           <p style="color:var(--text-muted); line-height:1.85;">
-            It's a solar system app with two main pages. The home page has all eight planets orbiting the Sun
-            in 3D and you can click on any of them to go to the Explore page, where you can spin the planet
-            around, change how the surface looks, and read information about it that gets loaded from a PHP backend.
-            I went with a solar system theme mainly because planets are just spheres so I didn't have to deal
-            with complicated geometry and could focus more on the shaders and materials instead.
+            This is a solar system web app with two primary pages. The home page has all eight planets orbiting
+            the Sun in three dimensions. Once you click on any of these planets, you will be taken to an Explore
+            page which allows you to spin the planet around in any direction, change how the surface of that
+            planet looks, and read facts about it loaded from a PHP backend.
           </p>
           <p style="color:var(--text-muted); line-height:1.85;">
-            I used THREE.js for the 3D rendering, PHP with SQLite for the backend, Bootstrap for layout,
-            and the Web Audio API for background sound. All the planet textures are drawn with Canvas 2D
-            when the page loads so there are no image files in the project.
+            A solar system was the theme I chose since planets are simply spheres — therefore I did not need to
+            contend with complicated geometry and could spend most of my time working with shaders and lighting.
           </p>
+          <p style="color:var(--text-muted); line-height:1.85;">Technologies used:</p>
+          <ul style="color:var(--text-muted); line-height:2.1; padding-left:1.2rem;">
+            <li>THREE.js — 3-dimensional rendering</li>
+            <li>PHP + SQLite — backend database containing planet data</li>
+            <li>Bootstrap 5 — layout &amp; responsive navigation</li>
+            <li>Web Audio API — procedural background sound</li>
+            <li>Canvas 2D — all planetary textures are generated at runtime</li>
+          </ul>
         </div>
       </div>
 
@@ -68,21 +74,23 @@
           <div class="about-section-title">3D Models</div>
           <h2 class="about-heading">Blender – Solar System X3D Models</h2>
           <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">
-            I used <strong>Blender 4</strong> with its Python API (<code>bpy</code>) to build the 3D models.
-            I wrote a script that creates the whole scene programmatically — it adds each planet as a UV sphere,
-            applies materials and textures through the node editor, then exports everything as
-            <strong>X3D files</strong> so they can be opened in a browser or X3D viewer.
+            I made all 3D models of the Solar System using Blender version 4. Using Blender's Python scripting
+            API (<code>bpy</code>), I wrote a Python script that programmatically generated the entire solar system
+            scene within Blender, which is why it can be exported as X3D files (ISO Web3D standard) and used
+            directly in a browser or an X3D viewer.
           </p>
-          <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">
-            For the surfaces I used Noise Texture nodes on the rocky planets (Mercury, Earth, Mars) and Wave Texture
-            nodes for Jupiter and Saturn to get the banding effect. Saturn and Uranus have ring geometry created
-            with a Boolean Difference so the inner hole is properly cut out rather than just a flat circle.
-            The Sun has an Emission Strength of 5 and a Point Light at its centre to actually illuminate the scene.
-          </p>
+          <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">What the script does:</p>
+          <ul style="color:var(--text-muted); font-size:0.85rem; line-height:2;">
+            <li><strong>Geometry</strong> — I created all objects by adding UV Spheres with Subdivision Surface modifiers to get the smooth shapes I wanted. I also had to make the ring systems around Saturn and Uranus manually using Boolean Difference operations because Blender didn't have a straightforward way to do this.</li>
+            <li><strong>Materials</strong> — I applied a Principled BSDF to each object with physically based metallic, roughness, and emission values. I set the Sun to emit light at strength 5 in order to make itself glow brightly enough to illuminate the rest of the scene.</li>
+            <li><strong>Procedural Textures</strong> — I created procedural textures for Mercury, Earth, and Mars using Noise Texture nodes. For Jupiter and Saturn I added Wave Texture nodes to give them their striped pattern.</li>
+            <li><strong>Lighting</strong> — I have a Point Light at the origin of the Sun with energy 5000, a colour temperature of about 4000K (warm yellowish), and a very low ambient world shader so you can still see planets that are behind other planets.</li>
+            <li><strong>Cameras</strong> — I have several named cameras: an overhead camera looking down at the whole system from above, another one looking down but slightly tilted for a better view of the inner planets, a camera focused in on just the Sun, and cameras focused in on Earth, Saturn, and Jupiter.</li>
+          </ul>
           <div class="row g-3 mt-2">
             <div class="col-md-6">
               <img src="Screenshot 2026-05-10 at 3.59.08 PM.png" alt="Blender viewport showing full solar system with coloured planets and orbit rings" style="width:100%;border-radius:8px;border:1px solid #333;">
-              <small style="color:var(--text-muted);">Full scene in Blender material preview — all 8 planets plus the Sun</small>
+              <small style="color:var(--text-muted);">Full solar system scene in Blender – material preview mode</small>
             </div>
             <div class="col-md-6">
               <img src="Screenshot 2026-05-10 at 4.24.34 PM.png" alt="Blender viewport showing Saturn with ring geometry and procedural banding" style="width:100%;border-radius:8px;border:1px solid #333;">
@@ -90,7 +98,7 @@
             </div>
           </div>
           <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8; margin-top:1rem;">
-            The exported X3D files are in <code>models/x3d/</code> in the repository — one per planet plus a full scene file with all of them together.
+            All of the exported X3D files are located in <code>models/x3d/</code> in the repository, along with a single X3D file containing every planet.
           </p>
         </div>
       </div>
@@ -100,22 +108,23 @@
           <div class="about-section-title">Design decisions</div>
           <h2 class="about-heading">Why I made certain choices</h2>
           <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">
-            Dark background was kind of a given since the 3D scene takes up the whole screen —
-            a light background would just look wrong. I went with a gold accent colour because it
-            felt space-themed and contrasts well enough to be readable. Bootstrap handles the grid
-            and the nav, everything else is custom CSS using variables so I could change colours
-            easily without hunting through the whole stylesheet.
+            A dark background was an obvious choice — since the entire 3D scene will fill the screen, anything
+            lighter than that would compete against it. The gold colour for accents seemed fitting for the space
+            theme, and it provides enough contrast for the user to read. For layout and navigation Bootstrap
+            provided what I needed, however everything else is custom CSS based on variables so colours were
+            always consistent.
           </p>
           <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">
-            The side panels have a blur effect so you can still see the 3D behind them.
-            On mobile they slide off-screen and come back with the toggle button. There's a
-            flicker bug in Safari iOS when you're rotating the planet and the panel is open —
-            I half fixed it but couldn't fully get rid of it, it seems to be a known browser issue.
+            The side panels use a backdrop blur, so although the panels are visible, you can still see the 3D
+            scene through them. On a mobile device they slide out of view and back in by clicking a toggle button.
+            I was able to partially correct a blur flicker bug in Safari iOS when rotating a planet with one of
+            the side panels open — unfortunately this appears to be a known browser issue.
           </p>
           <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">
-            For the backend I tried to keep it structured — <code>Planet.php</code> does all the database
-            stuff, <code>api.php</code> handles routing, and the JS just fetches and updates the scene.
-            There's also a static fallback so it works even if there's no PHP server.
+            I tried to keep things organised for the backend as well — <code>Planet.php</code> manages all of the
+            database calls, <code>api.php</code> manages the routing, and the JavaScript simply makes API calls
+            and updates the 3D scene. There is also a static fallback which allows the application to function
+            even if a PHP server isn't running.
           </p>
         </div>
       </div>
@@ -125,18 +134,22 @@
           <div class="about-section-title">Accessibility</div>
           <h2 class="about-heading">What I considered</h2>
           <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">
-            Making a WebGL canvas properly accessible is difficult because it's basically just a
-            picture at the end of the day. I focused on what I could actually do. All three pages
-            have a skip link that appears when you tab to it. I used proper semantic elements like
-            <code>&lt;main&gt;</code> and <code>&lt;aside&gt;</code> rather than stacking divs, and
-            the info panel has <code>aria-live</code> so screen readers get told when it updates.
-            The toggle buttons have <code>aria-pressed</code> so their state is communicated properly.
+            The biggest problem with making a WebGL canvas fully accessible is that ultimately, it's simply an
+            image rendered onto a canvas. Therefore, my focus was entirely on what I can directly influence.
+            Every single one of the three pages includes a skip link that will appear when you click on it using
+            your Tab key. I employed actual semantic elements (header tags and footer tag) instead of nesting
+            divs. In addition, I set up the info panel as <code>aria-live</code> which enables screen readers
+            to announce changes made to this area. Furthermore, I also applied <code>aria-pressed</code> to
+            every toggle button, enabling its current status to be announced.
           </p>
           <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">
-            The Explore page works with just the keyboard — left and right arrows cycle through
-            planets. I also added <code>prefers-reduced-motion</code> support so orbits pause
-            automatically if someone has that enabled. I checked all the text colours against
-            WCAG AA and had to bump up the muted text because it was failing at small sizes.
+            Additionally, the Explore page works completely with the use of the keyboard. Users may cycle
+            through all of the available planets by using the left and right arrow keys — no need for a mouse.
+            I also implemented <code>prefers-reduced-motion</code> support so the orbits stop moving upon
+            enabling reduced motion in the user's operating system preferences. Lastly, I reviewed all text
+            colour combinations against WCAG AA contrast ratio requirements and had to increase the contrast
+            ratio of the muted colour due to it having failed to meet contrast requirement standards at smaller
+            font sizes.
           </p>
         </div>
       </div>
@@ -147,69 +160,76 @@
           <h2 class="about-heading">The parts that took longer than expected</h2>
 
           <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.85; margin-bottom:1.5rem;">
-            These are the specific things that didn't work first time and what I had to do to fix them.
+            These are the issues with my project that were difficult or required additional time to resolve, and how I resolved them.
           </p>
 
           <div style="border-left:2px solid rgba(0,200,255,0.3); padding-left:1.2rem; margin-bottom:1.8rem;">
-            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">GLSL shaders</h3>
+            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">GLSL Shaders</h3>
             <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8;">
-              I hadn't written GLSL before so this took ages. I wrote three shaders — the Sun surface,
-              the atmosphere glow, and the background nebula.
+              This was my first experience writing GLSL shaders, so this task took longer than expected.
+              I created three shaders: one for the Sun's surface, another for the atmospheric glow around
+              the planets, and a final one for the background nebula.
             </p>
             <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8; margin-top:0.6rem;">
-              The atmosphere one was the worst. The glow was showing up on the wrong side of the planet
-              and I couldn't figure out why for a long time. Turned out I was comparing the surface normal
-              against the camera direction but the normal was in eye space (from THREE.js's <code>normalMatrix</code>)
-              and the camera direction was in world space, so the comparison made no sense. Found the explanation
-              on an old Stack Overflow post eventually. Once I changed the coordinate space it just worked.
+              The atmosphere shader was by far the most difficult part. Initially the glow was always showing
+              up on the opposite side of the planet from where it should have been. After debugging I realised
+              I was comparing the surface normal against the camera direction but the two vectors were in
+              different spaces — the surface normal was in eye space due to THREE.js's <code>normalMatrix</code>,
+              whereas the camera direction was in world space, so the comparison made no sense. I found the
+              solution in an older Stack Overflow question. As soon as I switched both vectors to the same
+              space, it worked perfectly.
             </p>
           </div>
 
           <div style="border-left:2px solid rgba(0,200,255,0.3); padding-left:1.2rem; margin-bottom:1.8rem;">
-            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Alpha not working how I expected</h3>
+            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Alpha Compounding</h3>
             <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8;">
-              When I was drawing the Mars texture I put a load of soft overlapping circles at 0.5 opacity
-              to make it look rough and dusty. They all came out as a solid black blob. The problem is that
-              transparent layers compound — they don't just add — so 37 circles at 0.5 opacity ends up basically
-              fully opaque. I had to work out the actual per-circle alpha I needed to get the total darkness
-              I wanted, which came out at around 0.012 each. It's not something that gets mentioned anywhere,
-              you just hit it and wonder why nothing's working.
+              To create a Martian surface texture I drew many soft translucent circular blobs (about 37 total),
+              each with an opacity of 0.5. Instead of a textured rocky surface, all the blobs combined into one
+              large black circle. Alpha compounding occurs when multiple transparent layers are drawn on top of
+              one another — unlike regular addition, transparent layers combine according to the formula
+              <code>1 − (1−α)^N</code>, so 37 circles at 0.5 opacity ends up nearly fully opaque. To fix this
+              I calculated the per-circle alpha value needed to achieve the level of darkening I actually wanted,
+              which turned out to be approximately 0.012. There isn't much documentation on this — you mostly
+              learn through trial and error.
             </p>
           </div>
 
           <div style="border-left:2px solid rgba(0,200,255,0.3); padding-left:1.2rem; margin-bottom:1.8rem;">
-            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Bloom messing up the background</h3>
+            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Bloom Post-Processing / Exposure &amp; Brightness Values</h3>
             <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8;">
-              I added bloom so the Sun would glow properly. What I didn't realise is that the bloom threshold,
-              the tone mapping exposure, and the nebula shader are all connected. I turned up the exposure to
-              make the planets look better and suddenly the whole background turned purple because bloom was
-              picking up the nebula output. Had to tune all three at the same time, you can't just change one
-              and expect the others to stay normal.
+              I implemented bloom post-processing to help the Sun stand out by making it brighter and glowing.
+              What I didn't realise at the time was that changing either the bloom threshold or the exposure
+              would cause the nebula background to bleed purple throughout the entire scene, because bloom was
+              reading off the nebula's output. In other words, adjusting any one of these three values affected
+              all three. I had to tune all of them simultaneously rather than independently.
             </p>
           </div>
 
           <div style="border-left:2px solid rgba(0,200,255,0.3); padding-left:1.2rem; margin-bottom:1.8rem;">
-            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Moons jumping when planets moved</h3>
+            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Orbiting Moons</h3>
             <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8;">
-              My first approach was to calculate the moon's world position every frame with trig. It worked
-              fine until the planet moved, then the moon would just teleport to the wrong spot.
+              Initially I attempted to calculate the moon's world position relative to its planet each frame
+              using basic trigonometric equations. While this worked at first, it failed whenever the planet
+              moved since I was working in a coordinate space that changed along with it.
             </p>
             <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8; margin-top:0.6rem;">
-              The fix is to put an empty <code>Object3D</code> inside the planet's orbit pivot and attach
-              the moon to that. When you rotate the empty object the moon follows automatically, no manual
-              position maths needed. Obvious once you know, but I wasted a fair bit of time on the wrong
-              approach before I got there.
+              The correct approach is to attach an empty <code>Object3D</code> to the planet's orbital pivot
+              and parent the moon to that empty object. When you rotate the empty object it inherits all of
+              the planet's motion automatically, without requiring manual position updates. While obvious now,
+              I spent considerable time attempting to implement this incorrectly before figuring out the right way.
             </p>
           </div>
 
           <div style="border-left:2px solid rgba(0,200,255,0.3); padding-left:1.2rem;">
-            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Loading screen hanging with no server</h3>
+            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Loading Screen Hanging with No Server</h3>
             <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8;">
-              When the PHP server wasn't running, the fetch just hung forever and the loading screen never
-              went away. There was no error, the page just looked frozen. I fixed it with <code>AbortController</code>
-              to cancel the request after 2.5 seconds and fall back to hardcoded JSON. Same thing happened
-              with CDN textures so I ended up just generating everything procedurally with Canvas — which also
-              means the app has no external dependencies to break.
+              When the PHP server wasn't running, <code>fetch()</code> would just hang indefinitely with no
+              error. The page looked completely frozen and the only way out was a hard reload. I fixed this
+              using <code>AbortController</code> to cancel the request after 2.5 seconds and fall back to
+              hardcoded JSON data. The same issue came up with CDN textures, so I ended up generating
+              everything procedurally with Canvas 2D — which also means the app has no external dependencies
+              that could break.
             </p>
           </div>
 
@@ -222,9 +242,9 @@
           <h2 class="about-heading">What I tested and how</h2>
 
           <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.5rem; line-height:1.75;">
-            I tested in Chrome and Firefox on my laptop and on an iPhone in Safari. I also tested keyboard
-            navigation without touching the mouse at all. The Safari blur flicker came up during the
-            mobile testing and is only partially fixed.
+            Tested in Chrome and Firefox on a laptop, and on an iPhone in Safari. Keyboard navigation
+            was tested without touching the mouse. The Safari backdrop blur flicker came up during mobile
+            testing and is only partially fixed.
           </p>
 
           <div style="overflow-x:auto;">
@@ -261,7 +281,7 @@
                   <td>Planet data loads from PHP</td>
                   <td>Select Neptune on Explore while server is running</td>
                   <td>Stats panel fills in with Neptune's data</td>
-                  <td>Works, loads quickly on localhost</td>
+                  <td>Works, loads fast on localhost</td>
                   <td><span class="badge-pass">Pass</span></td>
                 </tr>
                 <tr>
@@ -269,7 +289,7 @@
                   <td>Fallback works without a server</td>
                   <td>Open explore.html directly with no PHP running</td>
                   <td>Site still works using the hardcoded fallback data</td>
-                  <td>As expected — console shows a warning which is correct</td>
+                  <td>Works — console shows expected warning</td>
                   <td><span class="badge-pass">Pass</span></td>
                 </tr>
                 <tr>
