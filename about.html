@@ -64,6 +64,39 @@
         </div>
       </div>
 
+      <!-- 3D Models – Blender -->
+      <div class="col-12">
+        <div class="about-card fade-in-up">
+          <div class="about-section-title">3D Models</div>
+          <h2 class="about-heading">Blender – Solar System X3D Models</h2>
+          <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">
+            All 3D models were authored in <strong>Blender 4</strong> using its Python scripting API (<code>bpy</code>).
+            A Python script programmatically built the entire solar system scene inside Blender and exported
+            the models as <strong>X3D files</strong> (ISO Web3D standard) for use in the browser.
+          </p>
+          <ul style="color:var(--text-muted); font-size:0.85rem; line-height:2;">
+            <li><strong>Geometry</strong> – UV Spheres with Subdivision Surface modifiers for smooth silhouettes. Ring geometry for Saturn and Uranus was created using Boolean Difference operations.</li>
+            <li><strong>Materials</strong> – Principled BSDF materials with physically accurate metallic, roughness and emission values. The Sun uses Emission Strength 5 to self-illuminate.</li>
+            <li><strong>Procedural Textures</strong> – Noise Texture nodes for rocky surfaces (Mercury, Venus, Earth, Mars). Wave Texture nodes for gas-giant banding on Jupiter and Saturn.</li>
+            <li><strong>Lighting</strong> – Point Light at the Sun's origin (energy 5000, warm colour temperature) plus a dim ambient world shader.</li>
+            <li><strong>Cameras</strong> – Multiple named cameras: top-down overview, angled overview, close-up Sun, and individual planet close-ups for Earth, Saturn and Jupiter.</li>
+          </ul>
+          <div class="row g-3 mt-2">
+            <div class="col-md-6">
+              <img src="Screenshot 2026-05-10 at 3.59.08 PM.png" alt="Blender viewport showing full solar system with coloured planets and orbit rings" style="width:100%;border-radius:8px;border:1px solid #333;">
+              <small style="color:var(--text-muted);">Full solar system scene in Blender – material preview mode</small>
+            </div>
+            <div class="col-md-6">
+              <img src="Screenshot 2026-05-10 at 4.24.34 PM.png" alt="Blender viewport showing Saturn with ring geometry and procedural banding" style="width:100%;border-radius:8px;border:1px solid #333;">
+              <small style="color:var(--text-muted);">Saturn with procedural gas-band texture and Boolean ring geometry</small>
+            </div>
+          </div>
+          <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8; margin-top:1rem;">
+            The X3D files are in the <code>models/x3d/</code> folder of the repository — one file per planet plus a full scene file.
+          </p>
+        </div>
+      </div>
+
       <!-- Design and structure -->
       <div class="col-12 col-lg-6">
         <div class="about-card fade-in-up">
@@ -322,6 +355,19 @@
             </table>
           </div>
 
+        </div>
+      </div>
+
+      <!-- Submission Links -->
+      <div class="col-12">
+        <div class="about-card fade-in-up">
+          <div class="about-section-title">Submission</div>
+          <h2 class="about-heading">Links</h2>
+          <ul style="color:var(--text-muted); font-size:0.88rem; line-height:2.2; padding-left:1.2rem;">
+            <li><strong>Live App:</strong> <a href="https://mazennmetwallyy.github.io/web-3d-solar-system/" target="_blank" style="color:var(--accent-primary);">https://mazennmetwallyy.github.io/web-3d-solar-system/</a></li>
+            <li><strong>GitHub Codebase:</strong> <a href="https://github.com/Mazennmetwallyy/web-3d-solar-system" target="_blank" style="color:var(--accent-primary);">https://github.com/Mazennmetwallyy/web-3d-solar-system</a></li>
+            <li><strong>X3D Models:</strong> <a href="https://github.com/Mazennmetwallyy/web-3d-solar-system/tree/main/models/x3d" target="_blank" style="color:var(--accent-primary);">https://github.com/Mazennmetwallyy/web-3d-solar-system/tree/main/models/x3d</a></li>
+          </ul>
         </div>
       </div>
 
