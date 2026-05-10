@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN"
+  "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D version="3.3" profile="Immersive">
+  <Scene>
+    <Background skyColor="0.00 0.00 0.05"/>
+      <PointLight location="0.0000 0.0000 0.0000" intensity="1.0000" radius="500.0000" ambientIntensity="0.12" color="1.0 0.97 0.88" on="true"/>
+      <Viewpoint DEF="Front" description="Front" position="0.0000 -14.0000 5.0000" orientation="-0.9417 0.0000 0.0000 1.2278" fieldOfView="0.7850"/>
+      <Viewpoint DEF="Close" description="Close" position="0.0000 -8.0000 3.0000" orientation="-0.9363 0.0000 0.0000 1.2120" fieldOfView="0.7850"/>
+
+  <!-- Sun -->
+  <Transform translation="0.0000 0.0000 0.0000">
+    <Shape>
+      <Appearance>
+        <Material DEF="SunMat"
+          diffuseColor="1.0000 0.8500 0.3000"
+          emissiveColor="1.0000 0.8500 0.3000"
+          specularColor="0.15 0.15 0.15"
+          shininess="0.05"
+          transparency="0"/>
+      </Appearance>
+      <Sphere radius="3.5000"/>
+    </Shape>
+  </Transform>
+  </Scene>
+</X3D>

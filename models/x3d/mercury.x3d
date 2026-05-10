@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN"
+  "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D version="3.3" profile="Immersive">
+  <Scene>
+    <Background skyColor="0.00 0.00 0.05"/>
+      <PointLight location="-4.6800 -3.9000 3.9000" intensity="0.1200" radius="100.0000" ambientIntensity="0.12" color="1.0 0.97 0.88" on="true"/>
+      <Viewpoint DEF="Front" description="Front" position="0.0000 -3.9000 1.1700" orientation="-0.9578 0.0000 0.0000 1.2793" fieldOfView="0.7850"/>
+      <Viewpoint DEF="Top" description="Top" position="0.0000 0.0000 5.8500" orientation="0.0000 0.0000 0.0000 0.0000" fieldOfView="0.7850"/>
+      <Viewpoint DEF="Side" description="Side" position="3.9000 0.0000 1.1700" orientation="0.0000 -0.9578 0.0000 1.2793" fieldOfView="0.7850"/>
+
+  <!-- Mercury -->
+  <Transform translation="0.0000 0.0000 0.0000">
+    <Shape>
+      <Appearance>
+        <Material DEF="MercuryMat"
+          diffuseColor="0.5500 0.4700 0.4000"
+          emissiveColor="0 0 0"
+          specularColor="0.15 0.15 0.15"
+          shininess="0.25"
+          transparency="0"/>
+      </Appearance>
+      <Sphere radius="0.3800"/>
+    </Shape>
+  </Transform>
+  </Scene>
+</X3D>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Solar System Explorer</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <nav class="navbar navbar-expand-lg fixed-top" aria-label="Main navigation">
+    <div class="container-fluid px-3">
+      <a class="navbar-brand" href="index.html">
+        <span class="brand-icon" aria-hidden="true">🪐</span>
+        Solar System Explorer
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navMenu" aria-controls="navMenu"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+        <ul class="navbar-nav gap-1">
+          <li class="nav-item"><a class="nav-link" href="index.html">🌌 Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="explore.html">🔭 Explore</a></li>
+          <li class="nav-item"><a class="nav-link active" href="about.html" aria-current="page">📄 About</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="about-hero container-xl" id="main-content">
+
+    <div class="text-center mb-5 fade-in-up">
+      <div class="about-section-title">Web 3D Assignment 2026</div>
+      <h1 class="display-4 fw-bold mb-3" style="color:var(--gold);">Solar System Explorer</h1>
+      <p class="lead" style="color:var(--text-muted); max-width:560px; margin:0 auto;">
+        How I built it, the decisions I made, and what I struggled with.
+      </p>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- What I built -->
+      <div class="col-12">
+        <div class="about-card fade-in-up">
+          <div class="about-section-title">What I built</div>
+          <h2 class="about-heading">Project Overview</h2>
+          <p style="color:var(--text-muted); line-height:1.85;">
+            I built a solar system web app with two main pages. The home page shows all eight planets
+            orbiting the Sun and you can click any of them to go through to the Explore page, where you
+            can rotate the planet, switch between surface modes, and read facts about it pulled from a
+            PHP backend. I picked a solar system theme because planets are just spheres, which meant I
+            could spend more time on the shaders and lighting rather than struggling with complex geometry.
+          </p>
+          <p style="color:var(--text-muted); line-height:1.85;">
+            The main technologies I used were THREE.js for the 3D, PHP and SQLite for the backend,
+            Bootstrap for the layout, and the Web Audio API for the ambient sound. All planet textures
+            are generated at runtime using Canvas 2D — there are no image files in the project at all.
+          </p>
+        </div>
+      </div>
+
+      <!-- Design and structure -->
+      <div class="col-12 col-lg-6">
+        <div class="about-card fade-in-up">
+          <div class="about-section-title">Design decisions</div>
+          <h2 class="about-heading">Why I made certain choices</h2>
+          <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">
+            Dark background was an obvious choice since the 3D scene is the main thing on screen —
+            anything lighter would fight with it. The gold accent colour felt right for a space theme
+            and it stands out well on dark backgrounds. I used Bootstrap for the grid layout and the
+            responsive navigation, but most of the styling is custom CSS using variables so it was
+            easy to keep things consistent.
+          </p>
+          <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">
+            The side panels use a blur effect so you can still see the 3D scene through them slightly.
+            On mobile they collapse off-screen and come in through a toggle button. This caused a
+            flickering issue on Safari iOS that I only half fixed — it's a known browser bug and I
+            couldn't get around it completely.
+          </p>
+          <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">
+            For the backend I followed an MVC pattern — <code>Planet.php</code> handles the database
+            queries, <code>api.php</code> routes the requests, and the JavaScript files make fetch calls
+            and update the scene. I also built a static fallback so the site works even without a PHP
+            server running.
+          </p>
+        </div>
+      </div>
+
+      <!-- Accessibility -->
+      <div class="col-12 col-lg-6">
+        <div class="about-card fade-in-up">
+          <div class="about-section-title">Accessibility</div>
+          <h2 class="about-heading">What I considered</h2>
+          <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">
+            WebGL content is hard to make fully accessible since it's essentially a bitmap drawn to a
+            canvas. I focused on the things I could actually control. There's a skip link on all three
+            pages that appears when you tab to it. The panels use proper semantic elements like
+            <code>&lt;main&gt;</code> and <code>&lt;aside&gt;</code> rather than just divs. The info
+            panel announces changes to screen readers with <code>aria-live</code>, and all the toggle
+            buttons have <code>aria-pressed</code> states.
+          </p>
+          <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.8;">
+            The Explore page supports keyboard navigation — left and right arrow keys cycle through all
+            the planets without needing a mouse. I also implemented <code>prefers-reduced-motion</code>
+            so the orbits pause automatically for users who have that turned on in their OS settings.
+            I checked all text colour combinations against WCAG AA contrast ratios and adjusted the
+            muted text colour because it originally failed at small sizes.
+          </p>
+        </div>
+      </div>
+
+      <!-- What I struggled with -->
+      <div class="col-12">
+        <div class="about-card fade-in-up" style="border-color:var(--gold);">
+          <div class="about-section-title" style="color:var(--gold);">What I struggled with</div>
+          <h2 class="about-heading">The parts that took longer than expected</h2>
+
+          <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.85; margin-bottom:1.5rem;">
+            This section is about the specific things that didn't work first time and what I had to
+            figure out to fix them.
+          </p>
+
+          <div style="border-left:2px solid rgba(0,200,255,0.3); padding-left:1.2rem; margin-bottom:1.8rem;">
+            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">GLSL shaders</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8;">
+              I'd never written raw GLSL before so this took a lot longer than I expected. I wrote three
+              shaders from scratch — the Sun surface, the atmosphere glow around planets, and the nebula
+              background.
+            </p>
+            <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8; margin-top:0.6rem;">
+              The atmosphere one was the most frustrating. The glow was appearing on the wrong side of
+              the planet for ages and I couldn't work out why. It turned out I was transforming the
+              surface normal into the wrong coordinate space — THREE.js's <code>normalMatrix</code>
+              gives you eye space, not world space, so comparing it against the camera direction was giving
+              completely wrong results. I eventually found the explanation on an old Stack Overflow thread.
+              Once I fixed that it worked straight away.
+            </p>
+          </div>
+
+          <div style="border-left:2px solid rgba(0,200,255,0.3); padding-left:1.2rem; margin-bottom:1.8rem;">
+            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Alpha compounding when drawing textures</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8;">
+              For Mars I was drawing lots of overlapping soft shapes to create Valles Marineris and set
+              each one's opacity to about 0.5, thinking they'd add up to a semi-transparent result. Instead
+              I got a solid black stripe. The issue is that transparent layers don't add — they compound
+              using the formula <code>1 − (1−α)^N</code>, so 37 layers at 0.5 opacity becomes basically
+              fully opaque. I had to calculate what alpha each individual blob needed to achieve the
+              overall darkening I actually wanted, which came out at about 0.012 per blob. This isn't
+              mentioned anywhere obvious, you just run into it.
+            </p>
+          </div>
+
+          <div style="border-left:2px solid rgba(0,200,255,0.3); padding-left:1.2rem; margin-bottom:1.8rem;">
+            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Bloom and tone mapping breaking each other</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8;">
+              I added post-processing bloom so the Sun would glow properly. What I didn't realise was
+              that the bloom threshold, the tone mapping exposure, and the nebula shader brightness are
+              all connected. When I increased the exposure to make the planets look brighter, the nebula
+              background started bleeding purple onto everything because the bloom was picking up its
+              output. I had to tune all three values together rather than independently, which took a
+              while to get right.
+            </p>
+          </div>
+
+          <div style="border-left:2px solid rgba(0,200,255,0.3); padding-left:1.2rem; margin-bottom:1.8rem;">
+            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Getting moons to orbit correctly</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8;">
+              My first attempt at adding moons was to manually calculate their world position every frame
+              using trigonometry. This worked until the parent planet moved, at which point the moon would
+              jump to the wrong place because I was working in the wrong coordinate space.
+            </p>
+            <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8; margin-top:0.6rem;">
+              The proper solution is to nest an empty <code>Object3D</code> inside the planet's orbital
+              pivot at the planet's position, and put the moon inside that. Then you just rotate the empty
+              object and the moon inherits all the planet's movement automatically — no manual position
+              calculations at all. It seems obvious once you know but I spent a while on the wrong approach first.
+            </p>
+          </div>
+
+          <div style="border-left:2px solid rgba(0,200,255,0.3); padding-left:1.2rem;">
+            <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">The loading screen hanging with no server</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem; line-height:1.8;">
+              If the PHP server wasn't running, <code>fetch()</code> would just hang indefinitely with no
+              error. The page looked frozen and the only way out was a hard reload. I fixed this by using
+              <code>AbortController</code> to cancel the request after 2.5 seconds and load a fallback
+              JSON file instead. The same thing happened with texture loading from a CDN — in the end I
+              removed all external texture fetches and generate everything procedurally, which also means
+              the site has no external dependencies.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Testing -->
+      <div class="col-12">
+        <div class="about-card fade-in-up">
+          <div class="about-section-title">Testing</div>
+          <h2 class="about-heading">What I tested and how</h2>
+
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.5rem; line-height:1.75;">
+            Tested in Chrome and Firefox on a laptop, and on an iPhone in Safari. Keyboard navigation
+            was tested without touching the mouse. The Safari panel flicker came up during mobile testing
+            and is only partially fixed.
+          </p>
+
+          <div style="overflow-x:auto;">
+            <table class="test-table" aria-label="Test results">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Test</th>
+                  <th>How I tested it</th>
+                  <th>Expected</th>
+                  <th>Result</th>
+                  <th>Pass?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Planets all orbit on load</td>
+                  <td>Open index.html via PHP server</td>
+                  <td>Loading screen fades, all 8 planets orbit the Sun</td>
+                  <td>As expected</td>
+                  <td><span class="badge-pass">Pass</span></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Clicking a planet opens Explore</td>
+                  <td>Click on Mars on the home page</td>
+                  <td>Navigates to explore.html with Mars pre-selected</td>
+                  <td>As expected</td>
+                  <td><span class="badge-pass">Pass</span></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Planet data loads from PHP</td>
+                  <td>Select Neptune on Explore while server is running</td>
+                  <td>Stats panel fills in with Neptune's data</td>
+                  <td>Works, loads quickly on localhost</td>
+                  <td><span class="badge-pass">Pass</span></td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Fallback works without a server</td>
+                  <td>Open explore.html directly with no PHP running</td>
+                  <td>Site still works using the hardcoded fallback data</td>
+                  <td>As expected — console shows a warning which is correct</td>
+                  <td><span class="badge-pass">Pass</span></td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Surface mode button cycles correctly</td>
+                  <td>Click the wireframe button three times</td>
+                  <td>Textured → Wireframe → Clay → back to Textured</td>
+                  <td>Works. Clay falls back to textured on the Sun since it uses a shader</td>
+                  <td><span class="badge-pass">Pass</span></td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Bloom can be toggled off</td>
+                  <td>Click Bloom Effect button</td>
+                  <td>Sun glow disappears, scene looks flatter</td>
+                  <td>As expected</td>
+                  <td><span class="badge-pass">Pass</span></td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>Earth's Moon orbits with Earth</td>
+                  <td>Zoom in on Earth and watch for a full orbit</td>
+                  <td>Moon orbits Earth and moves with it around the Sun</td>
+                  <td>As expected</td>
+                  <td><span class="badge-pass">Pass</span></td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>Saturn rings show the gap</td>
+                  <td>Select Saturn and zoom into the rings</td>
+                  <td>Visible gap (Cassini Division) between ring sections</td>
+                  <td>As expected</td>
+                  <td><span class="badge-pass">Pass</span></td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td>Space audio plays and stops</td>
+                  <td>Click Space Ambience on and off</td>
+                  <td>Drone starts and stops, button updates</td>
+                  <td>Works in Chrome and Firefox. Safari needs a tap first — handled</td>
+                  <td><span class="badge-pass">Pass</span></td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td>Arrow key navigation</td>
+                  <td>Press ← and → without clicking anything</td>
+                  <td>Cycles through planets, wraps around at the ends</td>
+                  <td>As expected</td>
+                  <td><span class="badge-pass">Pass</span></td>
+                </tr>
+                <tr>
+                  <td>11</td>
+                  <td>prefers-reduced-motion</td>
+                  <td>Enable Reduce Motion in macOS settings, reload pages</td>
+                  <td>Orbits pause on home page, auto-rotate off on Explore</td>
+                  <td>As expected</td>
+                  <td><span class="badge-pass">Pass</span></td>
+                </tr>
+                <tr>
+                  <td>12</td>
+                  <td>Mobile layout</td>
+                  <td>Test on iPhone in Safari</td>
+                  <td>Panels collapse, toggle buttons work, canvas fills screen</td>
+                  <td>Mostly works. Backdrop blur flickers when rotating on Safari iOS</td>
+                  <td><span class="badge-partial">Partial</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- References -->
+      <div class="col-12">
+        <div class="about-card fade-in-up">
+          <div class="about-section-title">References</div>
+          <h2 class="about-heading">What I used</h2>
+          <ul style="color:var(--text-muted); font-size:0.85rem; line-height:2.2; padding-left:1.2rem;">
+            <li>THREE.js documentation — <em>threejs.org</em></li>
+            <li>The Book of Shaders (noise and fBm techniques) — <em>thebookofshaders.com</em></li>
+            <li>NASA Solar System Exploration (planet data) — <em>solarsystem.nasa.gov</em></li>
+            <li>MDN Web Docs (Web Audio API, Fetch API, ES modules) — <em>developer.mozilla.org</em></li>
+            <li>Bootstrap 5 — <em>getbootstrap.com</em></li>
+            <li>SQLite documentation — <em>sqlite.org</em></li>
+            <li>WebGL Fundamentals (shader concepts) — <em>webglfundamentals.org</em></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
