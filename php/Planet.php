@@ -1,8 +1,4 @@
 <?php
-/**
- * Planet.php  —  Model class for planet data (MVC: Model layer)
- * Handles all database interactions for the planets table.
- */
 
 class Planet {
 
@@ -11,8 +7,6 @@ class Planet {
     public function __construct() {
         $dbPath = __DIR__ . '/../data/planets.db';
         if (!file_exists($dbPath)) {
-            // Auto-run setup if DB is missing
-            // Buffer output so setup.php's echo doesn't corrupt the JSON response
             ob_start();
             require_once __DIR__ . '/setup.php';
             ob_end_clean();
@@ -21,7 +15,6 @@ class Planet {
         $this->db->busyTimeout(5000);
     }
 
-    /** Return all planets as an associative array */
     public function getAll(): array {
         $result = $this->db->query("SELECT * FROM planets ORDER BY id");
         $rows = [];
@@ -31,7 +24,6 @@ class Planet {
         return $rows;
     }
 
-    /** Return a single planet by name (case-insensitive) */
     public function getByName(string $name): ?array {
         $stmt = $this->db->prepare("SELECT * FROM planets WHERE LOWER(name) = LOWER(:name) LIMIT 1");
         $stmt->bindValue(':name', $name);
@@ -40,7 +32,6 @@ class Planet {
         return $row ? $this->cast($row) : null;
     }
 
-    /** Return a single planet by id */
     public function getById(int $id): ?array {
         $stmt = $this->db->prepare("SELECT * FROM planets WHERE id = :id LIMIT 1");
         $stmt->bindValue(':id', $id, SQLITE3_INTEGER);
@@ -49,7 +40,6 @@ class Planet {
         return $row ? $this->cast($row) : null;
     }
 
-    /** Cast SQLite values to proper PHP types */
     private function cast(array $row): array {
         return [
             'id'               => (int)   $row['id'],

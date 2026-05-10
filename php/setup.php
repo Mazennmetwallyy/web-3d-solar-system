@@ -1,13 +1,7 @@
 <?php
-/**
- * setup.php
- * Run this script ONCE to initialise the SQLite database and seed planet data.
- * Usage: php setup.php  OR  visit http://localhost:8000/php/setup.php
- */
 
 $dbPath = __DIR__ . '/../data/planets.db';
 
-// Create data directory if missing
 if (!is_dir(__DIR__ . '/../data')) {
     mkdir(__DIR__ . '/../data', 0755, true);
 }
@@ -15,7 +9,6 @@ if (!is_dir(__DIR__ . '/../data')) {
 try {
     $db = new SQLite3($dbPath);
 
-    // ── Schema ────────────────────────────────────────────────────────────────
     $db->exec("
         CREATE TABLE IF NOT EXISTS planets (
             id              INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,8 +30,6 @@ try {
         );
     ");
 
-    // Add surface_temp_c to existing databases that predate this column
-    // PRAGMA table_info is idempotent — safe to call on every setup run
     $hasTempCol = false;
     $colInfo = $db->query("PRAGMA table_info(planets)");
     while ($col = $colInfo->fetchArray(SQLITE3_ASSOC)) {
@@ -48,11 +39,7 @@ try {
         $db->exec("ALTER TABLE planets ADD COLUMN surface_temp_c INTEGER NOT NULL DEFAULT 0");
     }
 
-    // ── Seed data ─────────────────────────────────────────────────────────────
-    // surface_temp_c: mean surface (or cloud-top for gas/ice giants)
     $planets = [
-        //  name        type           km      AU     orb_days  rot_hrs
-        //  hex         atmo  atmo_col  moons rings  tilt   description  fun_fact  temp_c
         [
             'Sun', 'Star', 696340, 0, 0, 609.12,
             '#FDB813', 0, null, 0, 0, 7.25,
