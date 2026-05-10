@@ -1,17 +1,3 @@
-/*
-  style.css - Solar System Explorer
-  Custom dark theme, builds on top of Bootstrap 5 for layout.
-
-  Colours are all defined as custom properties at the top so
-  they're easy to change. I tried to keep the palette minimal:
-  gold for labels/titles, purple for interactive stuff, cyan for
-  info/highlights.
-
-  Note: backdrop-filter on the panels flickers on Safari iOS - known
-  WebKit issue, added -webkit- prefix to reduce it but not fully fixed.
-*/
-
-/* custom properties */
 :root {
   --space-black:   #07070f;
   --space-dark:    #0d0d1a;
@@ -27,7 +13,7 @@
   --red:           #ff4444;
 
   --text-primary:  #e8e8f0;
-  --text-muted:    #9898b8;  /* was #7a7a9a — increased to pass WCAG AA 4.5:1 on #07070f */
+  --text-muted:    #9898b8;
 
   --nav-height:    64px;
   --panel-width:   280px;
@@ -39,7 +25,6 @@
   --transition:    all 0.3s ease;
 }
 
-/* Skip link — visually hidden until focused, for keyboard / screen-reader users */
 .skip-link {
   position: absolute;
   top: -100%;
@@ -58,7 +43,6 @@
   top: 0;
 }
 
-/* Reset / Base ─────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 
 html, body {
@@ -76,12 +60,10 @@ body { min-height: 100vh; }
 a { color: var(--gold); text-decoration: none; }
 a:hover { color: var(--gold-dim); }
 
-/* Scrollbar ─────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--space-dark); }
 ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
 
-/* Navigation ────────────────────────────────────────────── */
 .navbar {
   background: rgba(7, 7, 15, 0.9) !important;
   backdrop-filter: blur(12px);
@@ -129,7 +111,6 @@ a:hover { color: var(--gold-dim); }
   filter: invert(1);
 }
 
-/* Canvas / Scene wrapper ────────────────────────────────── */
 #scene-wrapper {
   position: fixed;
   inset: 0;
@@ -144,7 +125,6 @@ a:hover { color: var(--gold-dim); }
   height: 100% !important;
 }
 
-/* Side Panel ────────────────────────────────────────────── */
 .side-panel {
   position: fixed;
   top: var(--nav-height);
@@ -187,7 +167,6 @@ a:hover { color: var(--gold-dim); }
   margin-bottom: 0.75rem;
 }
 
-/* Controls ──────────────────────────────────────────────── */
 .btn-space {
   background: var(--space-card);
   border: 1px solid var(--space-border);
@@ -206,7 +185,6 @@ a:hover { color: var(--gold-dim); }
   overflow: hidden;
 }
 
-/* Subtle ripple-like shine on hover */
 .btn-space::after {
   content: '';
   position: absolute;
@@ -244,7 +222,6 @@ a:hover { color: var(--gold-dim); }
   color: var(--space-black);
 }
 
-/* Speed slider */
 .speed-label {
   display: flex;
   justify-content: space-between;
@@ -278,7 +255,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.2);
 }
 
-/* Planet Labels (3D → 2D projected, positioned by JS) ─────── */
 #planet-labels {
   position: fixed;
   inset: 0;
@@ -317,7 +293,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   text-shadow: 0 0 10px rgba(240, 192, 64, 0.8);
 }
 
-/* Tooltip overlay ───────────────────────────────────────── */
 #planet-tooltip {
   position: fixed;
   background: rgba(7, 7, 15, 0.9);
@@ -333,7 +308,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   letter-spacing: 0.05em;
 }
 
-/* Planet Nav (Explore page) ─────────────────────────────── */
 .planet-nav-btn {
   display: flex;
   align-items: center;
@@ -363,7 +337,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   transform: translateX(3px);
 }
 
-/* Dot pulse animation when active */
 .planet-nav-btn.active .planet-dot {
   box-shadow: 0 0 0 3px rgba(124, 99, 255, 0.3);
   animation: dotPulse 2s ease-in-out infinite;
@@ -381,7 +354,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   flex-shrink: 0;
 }
 
-/* Info Panel (right side on explore) ───────────────────── */
 .info-panel {
   position: fixed;
   top: var(--nav-height);
@@ -454,7 +426,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   font-weight: 700;
 }
 
-/* Panel Toggle Button ───────────────────────────────────── */
 .panel-toggle {
   position: fixed;
   top: calc(var(--nav-height) + 1rem);
@@ -476,7 +447,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   border-color: var(--purple);
 }
 
-/* Loading screen ────────────────────────────────────────── */
 #loading-screen {
   position: fixed;
   inset: 0;
@@ -529,7 +499,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   to   { width: 100%; }
 }
 
-/* About Page ────────────────────────────────────────────── */
 .about-hero {
   min-height: 100vh;
   padding-top: calc(var(--nav-height) + 4rem);
@@ -547,7 +516,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   overflow: hidden;
 }
 
-/* Top edge accent */
 .about-card::before {
   content: '';
   position: absolute;
@@ -641,7 +609,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   line-height: 1.5;
 }
 
-/* Test table ────────────────────────────────────────────── */
 .test-table {
   width: 100%;
   border-collapse: collapse;
@@ -688,7 +655,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   font-size: 0.72rem;
 }
 
-/* Animations ────────────────────────────────────────────── */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -699,7 +665,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   opacity: 0;
 }
 
-/* Stagger children */
 .fade-in-up:nth-child(1) { animation-delay: 0.05s; }
 .fade-in-up:nth-child(2) { animation-delay: 0.12s; }
 .fade-in-up:nth-child(3) { animation-delay: 0.19s; }
@@ -713,7 +678,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .pulse { animation: pulse 2s infinite; }
 
-/* Planet name shimmer on hover in info panel */
 @keyframes shimmer {
   0%   { background-position: -200% center; }
   100% { background-position:  200% center; }
@@ -728,14 +692,12 @@ input[type="range"]::-webkit-slider-thumb:hover {
   animation: shimmer 4s linear infinite;
 }
 
-/* Subtle glow pulse on active nav link */
 @keyframes navGlow {
   0%, 100% { text-shadow: 0 0 0px transparent; }
   50%       { text-shadow: 0 0 8px var(--gold); }
 }
 .nav-link.active { animation: navGlow 3s ease-in-out infinite; }
 
-/* Floating panel entrance */
 @keyframes slideInLeft {
   from { transform: translateX(-20px); opacity: 0; }
   to   { transform: translateX(0);     opacity: 1; }
@@ -748,12 +710,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 .info-panel { animation: slideInRight 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 
-/* Responsive ────────────────────────────────────────────── */
 @media (max-width: 991px) {
   :root { --panel-width: 240px; }
 
-  /* Cancel the entry animations so they don't override the off-screen
-     translateX set below (animation fill-mode: forwards would win otherwise) */
   .side-panel,
   .info-panel {
     animation: none;
@@ -785,10 +744,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
   .mvs-diagram   { grid-template-columns: 1fr; }
 }
 
-/* responsive 16:9 video embed - standard CSS trick */
 .video-wrapper {
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 */
+  padding-bottom: 56.25%;
   height: 0;
   overflow: hidden;
   border-radius: 8px;
@@ -821,23 +779,15 @@ input[type="range"]::-webkit-slider-thumb:hover {
   text-decoration: underline;
 }
 
-/* Accessibility: honour prefers-reduced-motion ──────────────
-   Users who have enabled "reduce motion" in their OS settings
-   (Windows: Motion, macOS: Reduce Motion, iOS: Reduce Motion)
-   will have all decorative CSS animations disabled.
-   The 3D orbital animations are paused via JavaScript below.   */
 @media (prefers-reduced-motion: reduce) {
-  /* Disable all CSS transitions and animations sitewide */
   *, *::before, *::after {
     animation-duration:        0.01ms !important;
     animation-iteration-count: 1      !important;
     transition-duration:       0.01ms !important;
   }
 
-  /* Ensure fade-in-up elements are immediately visible, not stuck at opacity:0 */
   .fade-in-up { opacity: 1; }
 
-  /* Remove shimmer from planet title — just show it as plain text */
   .info-panel-title {
     animation: none;
     background: none;
@@ -845,7 +795,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
     color: var(--gold);
   }
 
-  /* Nav glow: keep the gold colour but stop pulsing */
   .nav-link.active {
     animation: none;
     text-shadow: 0 0 6px var(--gold);
