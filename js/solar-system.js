@@ -815,7 +815,7 @@ async function buildPlanets() {
     loadTexWithFallback(`${TEX_BASE}earth_clouds_1024.png`, fallbackCloud),
   ]);
 
-  console.log('textures loaded ok');
+
 
   for (const pd of PLANET_DATA) {
     scene.add(addOrbitRing(pd.dist));

@@ -1,13 +1,3 @@
-"""
-Solar System X3D Generator
-===========================
-Run this from Terminal (no Blender needed):
-
-    python3 generate_x3d.py
-
-Creates a folder called  x3d/  next to this script containing 10 X3D files.
-"""
-
 import os
 import math
 
@@ -15,8 +5,6 @@ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "x3d")
 os.makedirs(OUT_DIR, exist_ok=True)
 print(f"Output → {OUT_DIR}\n")
 
-# ── Planet data ───────────────────────────────────────────────────────────────
-# (name, radius, orbit_r, color_rgba, has_rings, ring_inner, ring_outer, ring_color)
 PLANETS = [
     ("Mercury", 0.38,  4.0,  (0.55, 0.47, 0.40, 1.0), False, 0,   0,   None),
     ("Venus",   0.95,  7.5,  (0.90, 0.78, 0.50, 1.0), False, 0,   0,   None),
@@ -32,8 +20,6 @@ SUN_RADIUS = 3.5
 SUN_COLOR  = (1.0, 0.85, 0.30, 1.0)
 
 
-# ── Formatting helpers ────────────────────────────────────────────────────────
-
 def f(v):
     return f"{v:.4f}"
 
@@ -44,13 +30,10 @@ def vec(x, y, z):
     return f"{f(x)} {f(y)} {f(z)}"
 
 
-# ── Geometry builders ─────────────────────────────────────────────────────────
-
 def sphere_xml(name, radius, color, tx=0, ty=0, tz=0, emissive=False):
     emit = col(color) if emissive else "0 0 0"
     shine = "0.05" if emissive else "0.25"
     return f"""
-  <!-- {name} -->
   <Transform translation="{vec(tx, ty, tz)}">
     <Shape>
       <Appearance>
@@ -67,7 +50,6 @@ def sphere_xml(name, radius, color, tx=0, ty=0, tz=0, emissive=False):
 
 
 def ring_xml(name, inner_r, outer_r, color, tx=0, ty=0, tz=0, segments=80):
-    """Flat annular ring as an IndexedFaceSet."""
     verts = []
     for i in range(segments):
         a = 2 * math.pi * i / segments
@@ -86,7 +68,6 @@ def ring_xml(name, inner_r, outer_r, color, tx=0, ty=0, tz=0, segments=80):
     transp = f(max(0.0, 1.0 - color[3]))
 
     return f"""
-  <!-- {name} Rings -->
   <Transform translation="{vec(tx, ty, tz)}">
     <Shape>
       <Appearance>
@@ -103,7 +84,6 @@ def ring_xml(name, inner_r, outer_r, color, tx=0, ty=0, tz=0, segments=80):
 
 
 def orbit_xml(radius, segments=120):
-    """Dashed orbit ring as an IndexedLineSet."""
     pts = []
     for i in range(segments + 1):
         a = 2 * math.pi * i / segments
@@ -144,8 +124,6 @@ def point_light(pos, energy=5000):
             f'ambientIntensity="0.12" color="1.0 0.97 0.88" on="true"/>')
 
 
-# ── File writer ───────────────────────────────────────────────────────────────
-
 def write_x3d(filename, body_parts, viewpoints, light_pos=(0,0,0), light_energy=5000):
     path = os.path.join(OUT_DIR, filename)
     lines = [
@@ -167,8 +145,6 @@ def write_x3d(filename, body_parts, viewpoints, light_pos=(0,0,0), light_energy=
         fh.write('\n'.join(lines))
     print(f"  ✓ {filename}")
 
-
-# ── Generate files ────────────────────────────────────────────────────────────
 
 def generate_full_scene():
     parts = [sphere_xml("Sun", SUN_RADIUS, SUN_COLOR, emissive=True)]
@@ -212,8 +188,6 @@ def generate_sun_file():
     ]
     write_x3d("sun.x3d", parts, vps, light_pos=(0, 0, 0), light_energy=5000)
 
-
-# ── Main ──────────────────────────────────────────────────────────────────────
 
 print("Generating X3D files …")
 generate_full_scene()

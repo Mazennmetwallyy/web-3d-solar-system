@@ -946,7 +946,6 @@ async function loadPlanet(name) {
     return;
   }
   currentData = data;
-  console.log('Loading planet:', name, data);
 
   [planetMesh, atmMesh, ringMesh, moonPivot, cloudMesh].forEach(obj => {
     if (obj) scene.remove(obj);
