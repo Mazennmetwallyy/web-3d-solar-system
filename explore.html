@@ -20,10 +20,10 @@
 </head>
 <body>
 
-  <!-- Skip link for keyboard / screen-reader navigation -->
+  
   <a class="skip-link" href="#explore-canvas">Skip to 3D scene</a>
 
-  <!-- ── Loading Screen ──────────────────────────────────────────────── -->
+  
   <div id="loading-screen" role="status" aria-label="Loading planet">
     <div class="loading-title">🔭 Explorer</div>
     <div class="loading-subtitle">Loading planet data…</div>
@@ -32,7 +32,7 @@
     </div>
   </div>
 
-  <!-- ── Navigation ──────────────────────────────────────────────────── -->
+  
   <nav class="navbar navbar-expand-lg fixed-top" aria-label="Main navigation">
     <div class="container-fluid px-3">
       <a class="navbar-brand" href="index.html" aria-label="Solar System Explorer home">
@@ -62,23 +62,23 @@
     </div>
   </nav>
 
-  <!-- ── THREE.js Canvas ─────────────────────────────────────────────── -->
+  
   <main id="scene-wrapper" aria-label="3D planet viewer">
     <canvas id="explore-canvas" aria-label="Interactive 3D planet. Drag to rotate, scroll to zoom. Use left and right arrow keys to cycle between planets."></canvas>
   </main>
 
-  <!-- ── Panel toggle buttons (mobile) ───────────────────────────────── -->
+  
   <button class="panel-toggle" id="panel-toggle-btn" style="left:1rem;"
           aria-label="Toggle planet list">☰</button>
   <button class="panel-toggle" id="info-toggle-btn" style="left:auto;right:1rem;"
           aria-label="Toggle info panel">ℹ</button>
 
-  <!-- ── Left Panel: Planet Selector ────────────────────────────────── -->
+  
   <aside class="side-panel" id="planet-selector" aria-label="Planet selector">
 
     <div class="panel-section">
       <div class="panel-title">Select Object</div>
-      <!-- Populated by JS -->
+      
       <div id="planet-list" role="list" aria-label="Planet list"></div>
     </div>
 
@@ -136,7 +136,7 @@
 
   </aside>
 
-  <!-- ── Right Panel: Planet Info ────────────────────────────────────── -->
+  
   <aside class="info-panel" id="info-panel" aria-label="Planet information"
          aria-live="polite">
 
@@ -187,9 +187,7 @@
 
     <div id="fun-fact-box" class="fun-fact-box" style="display:none;"></div>
 
-    <!-- NASA video section — per-planet YouTube embed with oEmbed validation.
-         JavaScript validates the video ID at runtime; if unavailable it hides
-         the iframe wrapper and keeps only the search button. -->
+    
     <div class="video-section" id="planet-video-section" style="display:none;">
       <div class="panel-title" id="planet-video-title" style="margin-top:1rem;">NASA Footage</div>
       <div class="video-wrapper" id="planet-video-wrapper">

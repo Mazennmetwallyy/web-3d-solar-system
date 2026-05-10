@@ -1,5 +1,4 @@
-// explore.js
-// TODO: comparison mode would be cool
+
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -8,20 +7,18 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { fetchPlanets, fetchPlanet, fmt } from './api.js';
 
-// nasa video ids
 const PLANET_VIDEOS = {
-  'Sun':     '6tmbeLTHC_0',  // NASA/Goddard - sun in ultra-hd
-  'Mercury': 'o8CgLFBLRY8',  // MESSENGER mosaic flyover
-  'Venus':   '4hH8P_-LiLs',  // NASA/JPL venus surface animation
-  'Earth':   'EWrXBhPCqTk',  // ISS earth time-lapse
-  'Mars':    'PKRtcvogqDE',  // perseverance rover landing
-  'Jupiter': 'WvfS72GJ6Uc',  // juno flyby
-  'Saturn':  'xrGAQCq9BMU',  // cassini grand finale
-  'Uranus':  'E8VLQW3C8YQ',  // voyager 2 uranus
-  'Neptune': 'JfNcuAkBCgs'   // voyager 2 neptune
+  'Sun':     '6tmbeLTHC_0',  
+  'Mercury': 'o8CgLFBLRY8',  
+  'Venus':   '4hH8P_-LiLs',  
+  'Earth':   'EWrXBhPCqTk',  
+  'Mars':    'PKRtcvogqDE',  
+  'Jupiter': 'WvfS72GJ6Uc',  
+  'Saturn':  'xrGAQCq9BMU',  
+  'Uranus':  'E8VLQW3C8YQ',  
+  'Neptune': 'JfNcuAkBCgs'   
 };
 
-// fallback search queries
 const PLANET_SEARCH_TERMS = {
   'Sun':     'NASA Solar Dynamics Observatory sun highlights 4K',
   'Mercury': 'NASA MESSENGER mission Mercury planet flyover',
@@ -34,7 +31,6 @@ const PLANET_SEARCH_TERMS = {
   'Neptune': 'NASA Voyager 2 Neptune encounter flyby'
 };
 
-// validate youtube id
 async function validateYouTubeId(videoId) {
   try {
     const url = `https://www.youtube.com/oembed?url=https%3A//www.youtube.com/watch%3Fv%3D${videoId}&format=json`;
@@ -47,9 +43,6 @@ async function validateYouTubeId(videoId) {
   }
 }
 
-// shaders
-// noise + fbm from iq's shadertoy stuff (https://www.shadertoy.com/view/4dS3Wd), adapted for three.js
-// same functions as the home page, just copied across rather than importing to keep things simple
 const NEBULA_VERT = `
   varying vec2 vUv;
   void main(){
@@ -124,7 +117,6 @@ renderer.toneMappingExposure = 1.65;
 
 const scene = new THREE.Scene();
 
-// background
 scene.add(new THREE.Mesh(
   new THREE.SphereGeometry(800, 32, 32),
   new THREE.ShaderMaterial({
@@ -142,7 +134,6 @@ controls.dampingFactor = 0.07;
 controls.minDistance = 2.5;
 controls.maxDistance = 180;
 
-// bloom
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 const bloomPass = new UnrealBloomPass(
@@ -151,7 +142,6 @@ const bloomPass = new UnrealBloomPass(
 );
 composer.addPass(bloomPass);
 
-// lights
 const sunLight = new THREE.DirectionalLight(0xfff4e0, 2.8);
 sunLight.position.set(6, 3, 5);
 scene.add(sunLight);
@@ -163,12 +153,10 @@ scene.add(fillLight);
 const ambientLight = new THREE.AmbientLight(0x111122, 0.8);
 scene.add(ambientLight);
 
-// rim light
 const rimLight = new THREE.DirectionalLight(0x2244aa, 0.45);
 rimLight.position.set(-22, -12, -22);
 scene.add(rimLight);
 
-// starfield
 (function() {
   const spread = 1400;
   function makeLayer(count, size, opacity, palette, dimRange) {
@@ -194,12 +182,6 @@ scene.add(rimLight);
   scene.add(makeLayer(35, 2.8, 1.0, [[.72,.84,1],[.88,.94,1],[1,1,.90],[1,.94,.58],[1,.72,.32],[1,.42,.25]], [0.88, 1.0]));
 })();
 
-
-// planet textures
-// this whole section started as makePlanetTex() (at the bottom) which was just gradients
-// then i added per-planet generators and it got way out of hand
-// the _rng / _h / _vn / _fbm helpers are js versions of the glsl noise functions above
-// had to rewrite them in js because canvas2d cant run glsl
 function _rng(seed) {
   let s = (seed * 1664525 + 1013904223) | 0;
   return function() {
@@ -222,7 +204,6 @@ function _clamp(v,lo,hi){return v<lo?lo:v>hi?hi:v;}
 function _mix(a,b,t){return a+(b-a)*t;}
 function _ss(lo,hi,v){const t=_clamp((v-lo)/(hi-lo),0,1);return t*t*(3-2*t);}
 
-// TODO: cache these
 function _pixBase(W, H, SW, SH, fn) {
   const sc=document.createElement('canvas'); sc.width=SW; sc.height=SH;
   const sctx=sc.getContext('2d'); const id=sctx.createImageData(SW,SH); const d=id.data;
@@ -240,9 +221,6 @@ function _pixBase(W, H, SW, SH, fn) {
   return {c, ctx};
 }
 
-// ---- MERCURY ----
-// references: https://en.wikipedia.org/wiki/Caloris_Basin + nasa photojournal images
-// spent a lot of time looking at MESSENGER photos to get the colour right
 function makeMercuryTex(size) {
   const W=size*2, H=size;
   const {c,ctx}=_pixBase(W,H,768,384,(u,v)=>{
@@ -256,7 +234,7 @@ function makeMercuryTex(size) {
     let r = lum + warmBias;
     let g = lum + warmBias*0.45;
     let b = lum - 0.012 + warmBias*0.10;
-    // caloris
+    
     const cbx=(u-0.528)*3.2, cby=(v-0.330)*3.8; const cbD=Math.sqrt(cbx*cbx+cby*cby);
     const basinFloor = _ss(0.16, 0.0, cbD);
     const montesRim  = _ss(0.26,0.16,cbD) * _ss(0.16,0.26,cbD) * 4.0;
@@ -300,7 +278,6 @@ function makeMercuryTex(size) {
   return new THREE.CanvasTexture(c);
 }
 
-// ---- VENUS ----
 function makeVenusTex(size) {
   const W=size*2, H=size;
   const c=document.createElement('canvas'); c.width=W; c.height=H;
@@ -367,7 +344,6 @@ function makeVenusTex(size) {
   return new THREE.CanvasTexture(c);
 }
 
-// ---- EARTH FALLBACK ----
 function makeFallbackEarth(size=512) {
   const W=size*2, H=size;
   const c=document.createElement('canvas'); c.width=W; c.height=H;
@@ -387,8 +363,8 @@ function makeFallbackEarth(size=512) {
   shallow.addColorStop(0,'rgba(18,80,140,.35)'); shallow.addColorStop(1,'rgba(0,0,0,0)');
   ctx.fillStyle=shallow; ctx.fillRect(0,0,W,H);
 
-  // continents
-  // north america
+  
+  
   poly([[0.060,0.180],[0.110,0.165],[0.155,0.175],[0.185,0.190],[0.210,0.210],
         [0.235,0.245],[0.245,0.285],[0.260,0.315],[0.275,0.350],[0.270,0.390],
         [0.255,0.420],[0.248,0.455],[0.238,0.490],[0.230,0.510],[0.218,0.530],
@@ -397,19 +373,19 @@ function makeFallbackEarth(size=512) {
         [0.148,0.340],[0.125,0.330],[0.105,0.310],[0.088,0.285],[0.075,0.255],
         [0.065,0.225],[0.058,0.200]],'#2d6e3e');
   poly([[0.000,0.175],[0.040,0.165],[0.060,0.180],[0.055,0.200],[0.030,0.205],[0.000,0.200]],'#2d6e3e');
-  // south america
+  
   poly([[0.218,0.530],[0.230,0.510],[0.242,0.525],[0.255,0.540],[0.268,0.558],
         [0.278,0.580],[0.282,0.610],[0.280,0.645],[0.275,0.680],[0.265,0.710],
         [0.250,0.738],[0.232,0.758],[0.215,0.768],[0.200,0.762],[0.188,0.748],
         [0.182,0.730],[0.180,0.705],[0.182,0.675],[0.188,0.645],[0.192,0.610],
         [0.195,0.580],[0.200,0.558],[0.205,0.545],[0.195,0.540]],'#3a7a28');
-  // europe
+  
   poly([[0.450,0.200],[0.462,0.190],[0.478,0.185],[0.492,0.188],[0.502,0.200],
         [0.510,0.215],[0.515,0.232],[0.510,0.248],[0.498,0.260],[0.482,0.268],
         [0.468,0.270],[0.455,0.265],[0.444,0.252],[0.440,0.235],[0.445,0.218]],'#5a8838');
   poly([[0.480,0.155],[0.492,0.148],[0.505,0.152],[0.512,0.165],[0.510,0.180],
         [0.502,0.188],[0.492,0.188],[0.480,0.182],[0.475,0.168]],'#4e8030');
-  // africa
+  
   poly([[0.448,0.278],[0.462,0.268],[0.478,0.268],[0.492,0.275],[0.505,0.288],
         [0.515,0.305],[0.522,0.330],[0.528,0.360],[0.530,0.395],[0.528,0.428],
         [0.522,0.462],[0.512,0.495],[0.500,0.528],[0.486,0.556],[0.470,0.578],
@@ -423,7 +399,7 @@ function makeFallbackEarth(size=512) {
   poly([[0.518,0.270],[0.540,0.268],[0.560,0.275],[0.574,0.290],[0.578,0.315],
         [0.568,0.340],[0.550,0.352],[0.530,0.350],[0.515,0.335],[0.512,0.312],
         [0.514,0.290]],'#c8a840');
-  // asia
+  
   poly([[0.510,0.188],[0.535,0.178],[0.562,0.172],[0.595,0.168],[0.632,0.170],
         [0.665,0.178],[0.695,0.188],[0.720,0.200],[0.742,0.215],[0.758,0.232],
         [0.768,0.250],[0.775,0.272],[0.778,0.298],[0.775,0.322],[0.765,0.342],
@@ -437,7 +413,7 @@ function makeFallbackEarth(size=512) {
         [0.558,0.372],[0.568,0.355]],'#6a9838');
   poly([[0.700,0.350],[0.718,0.345],[0.738,0.348],[0.750,0.360],[0.752,0.378],
         [0.742,0.395],[0.725,0.402],[0.708,0.398],[0.698,0.382],[0.696,0.365]],'#3e8530');
-  // australia
+  
   poly([[0.745,0.595],[0.762,0.585],[0.780,0.582],[0.800,0.585],[0.818,0.595],
         [0.830,0.610],[0.835,0.630],[0.832,0.652],[0.820,0.670],[0.802,0.680],
         [0.780,0.682],[0.760,0.675],[0.745,0.660],[0.738,0.642],[0.738,0.622],
@@ -468,7 +444,6 @@ function makeFallbackEarth(size=512) {
   return new THREE.CanvasTexture(c);
 }
 
-// ---- CLOUD LAYER (Earth) ----
 function makeFallbackCloud(size=256) {
   const W=size*2, H=size;
   const c=document.createElement('canvas'); c.width=W; c.height=H;
@@ -513,9 +488,6 @@ function makeFallbackCloud(size=256) {
   return new THREE.CanvasTexture(c);
 }
 
-// ---- MARS ----
-// valles marineris bezier path was the hardest part - had to look up the actual coordinates
-// from nasa's MOLA elevation map and manually pick uv positions that looked right
 function makeMarsTex(size) {
   const W=size*2, H=size;
   const {c,ctx}=_pixBase(W,H,512,256,(u,v)=>{
@@ -540,8 +512,8 @@ function makeMarsTex(size) {
     r-=n3*0.05; g-=n3*0.02;
     return [_clamp(r,0,1),_clamp(g,0,1),_clamp(b,0,1)];
   });
-  // valles marineris - long equatorial canyon system
-  // TODO: couldnt get the exact shape right, this is just an approximation
+  
+  
   {
     ctx.save();
     ctx.translate(W*0.375, H*0.465);
@@ -589,7 +561,6 @@ function makeMarsTex(size) {
   return new THREE.CanvasTexture(c);
 }
 
-// ---- JUPITER ----
 function makeJupiterTex(size) {
   const W=size*2, H=size;
   const c=document.createElement('canvas'); c.width=W; c.height=H;
@@ -651,7 +622,7 @@ function makeJupiterTex(size) {
     ctx.fillStyle=wg; ctx.beginPath(); ctx.arc(ox,oy,W*0.028,0,Math.PI*2); ctx.fill();
     ctx.restore();
   });
-  // great red spot
+  
   const gx=W*0.32, gy=H*0.428;
   const grsOuter=ctx.createRadialGradient(gx,gy,0,gx,gy,W*0.068);
   grsOuter.addColorStop(0,'rgba(175,48,12,.88)'); grsOuter.addColorStop(0.38,'rgba(192,65,18,.70)');
@@ -659,7 +630,7 @@ function makeJupiterTex(size) {
   ctx.save(); ctx.translate(gx,gy); ctx.scale(1,H*0.052/(W*0.068)); ctx.translate(-gx,-gy);
   ctx.fillStyle=grsOuter; ctx.beginPath(); ctx.arc(gx,gy,W*0.068,0,Math.PI*2); ctx.fill();
   ctx.restore();
-  // TODO: wanted swirl detail on the GRS but couldnt get it to look right without it going solid
+  
   for(let y=0;y<H;y+=2){
     const n=_vn(y*0.5,0)*0.5+_vn(y*1.2,5)*0.3;
     ctx.fillStyle=`rgba(0,0,0,${n*0.08})`;
@@ -674,7 +645,6 @@ function makeJupiterTex(size) {
   return new THREE.CanvasTexture(c);
 }
 
-// ---- SATURN BODY ----
 function makeSaturnBodyTex(size) {
   const W=size*2, H=size;
   const c=document.createElement('canvas'); c.width=W; c.height=H;
@@ -739,7 +709,6 @@ function makeSaturnBodyTex(size) {
   return new THREE.CanvasTexture(c);
 }
 
-// ---- URANUS ----
 function makeUranusTex(size) {
   const W=size*2, H=size;
   const c=document.createElement('canvas'); c.width=W; c.height=H;
@@ -779,7 +748,6 @@ function makeUranusTex(size) {
   return new THREE.CanvasTexture(c);
 }
 
-// ---- NEPTUNE ----
 function makeNeptuneTex(size) {
   const W=size*2, H=size;
   const c=document.createElement('canvas'); c.width=W; c.height=H;
@@ -796,7 +764,7 @@ function makeNeptuneTex(size) {
     ctx.fillStyle=`rgba(${i%2?12:0},${i%2?18:10},${i%2?50:24},.22)`;
     ctx.fillRect(0,y,W,H/14);
   }
-  // great dark spot
+  
   const gdX=W*0.36, gdY=H*0.40;
   const gdsG=ctx.createRadialGradient(gdX,gdY,0,gdX,gdY,W*0.062);
   gdsG.addColorStop(0,'rgba(4,8,55,.78)'); gdsG.addColorStop(0.5,'rgba(6,12,68,.55)'); gdsG.addColorStop(1,'rgba(0,0,0,0)');
@@ -860,7 +828,6 @@ function makeFallbackMoon(size=256) {
   return new THREE.CanvasTexture(c);
 }
 
-// fallback
 function makePlanetTex(colorA, colorB, banded = false, size = 512) {
   const c = document.createElement('canvas');
   c.width = c.height = size;
@@ -887,7 +854,6 @@ function makePlanetTex(colorA, colorB, banded = false, size = 512) {
   return new THREE.CanvasTexture(c);
 }
 
-
 function getPlanetTexFor(name, colorA, colorB, size) {
   switch (name) {
     case 'Jupiter': return makeJupiterTex(size);
@@ -901,9 +867,6 @@ function getPlanetTexFor(name, colorA, colorB, size) {
   }
 }
 
-// visual config - had to tweak emissive and shininess a lot by eye
-// higher shininess = tighter specular highlight (earth is shiny because of oceans)
-// TODO: this should probably live in the database alongside the planet data
 const VISUALS = {
   Sun:     {colorA:'#aa3300',colorB:'#ffbb00',emissive:'#ff6600', shininess:0  },
   Mercury: {colorA:'#6a6455',colorB:'#a09880',emissive:'#0e0b08', shininess:6  },
@@ -916,7 +879,6 @@ const VISUALS = {
   Neptune: {colorA:'#1020b8',colorB:'#3050d8',emissive:'#000010', shininess:28 },
 };
 
-// scene state
 let currentData = null;
 let planetMesh = null;
 let atmMesh = null;
@@ -930,7 +892,6 @@ let rotSpeed = 1.0;
 let atmVisible = true;
 let ringsVisible = true;
 
-// reduced motion
 const reducedMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
 if (reducedMotionMQ.matches) {
   autoRotate = false;
@@ -945,16 +906,12 @@ reducedMotionMQ.addEventListener('change', e => {
     document.getElementById('btn-rotate')?.dispatchEvent(new Event('click'));
   }
 });
-let surfaceMode = 'textured'; // 'textured' | 'wireframe' | 'clay'
+let surfaceMode = 'textured'; 
 
-// cache
 let earthTexCache = null;
 let cloudTexCache = null;
 let moonTexCache  = null;
 
-// ring builder
-// colouring by radial position using vertex colors - simpler than the uv remap approach on the home page
-// vertex color approach from: https://discourse.threejs.org/t/how-to-texture-ringgeometry/9990
 function buildSaturnRings(r) {
   const inner = r * 1.28, outer = r * 2.5;
   const geo = new THREE.RingGeometry(inner, outer, 96, 8);
@@ -966,7 +923,7 @@ function buildSaturnRings(r) {
     const t = (Math.sqrt(x*x+y*y) - inner) / (outer - inner);
     let d;
     if      (t < 0.45) d = 0.9 - t*0.3;
-    else if (t < 0.52) d = 0.05;            // Cassini division
+    else if (t < 0.52) d = 0.05;            
     else if (t < 0.75) d = 0.75-(t-0.52)*0.5;
     else               d = 0.12-(t-0.75)*0.4;
     d = Math.max(0, d);
@@ -1033,7 +990,7 @@ async function loadPlanet(name) {
 
   scene.add(planetMesh);
 
-  // atmosphere
+  
   if (data.atmosphere && data.atmosphere_color && name !== 'Sun') {
     atmMesh = new THREE.Mesh(
       new THREE.SphereGeometry(R * 1.16, 48, 48),
@@ -1053,7 +1010,7 @@ async function loadPlanet(name) {
     scene.add(atmMesh);
   }
 
-  // rings
+  
   if (data.has_rings && name === 'Saturn') {
     ringMesh = buildSaturnRings(R);
     ringMesh.visible = ringsVisible;
@@ -1069,7 +1026,7 @@ async function loadPlanet(name) {
     scene.add(ringMesh);
   }
 
-  // clouds
+  
   if (name === 'Earth') {
     if (!cloudTexCache) cloudTexCache = makeFallbackCloud();
     cloudMesh = new THREE.Mesh(
@@ -1079,7 +1036,7 @@ async function loadPlanet(name) {
     scene.add(cloudMesh);
   }
 
-  // moon
+  
   if (name === 'Earth') {
     if (!moonTexCache) moonTexCache = makeFallbackMoon();
     moonPivot = new THREE.Object3D();
@@ -1093,7 +1050,7 @@ async function loadPlanet(name) {
   }
 
   updatePanel(data);
-  // console.log('scene objects after load:', scene.children.length); // left this in for now
+  
 
   document.querySelectorAll('.planet-nav-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.planet === name);
@@ -1165,7 +1122,7 @@ function updatePanel(d) {
   frame.src = '';
 
   validateYouTubeId(videoId).then(title => {
-    // Guard against stale responses when the user switches planets quickly
+    
     if (currentData?.name !== planetName) return;
     if (title) {
       frame.src = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
@@ -1177,7 +1134,6 @@ function updatePanel(d) {
   });
 }
 
-// cam anim
 let camAnim = {
   active: false, t: 0, duration: 1.2,
   from: new THREE.Vector3(),
@@ -1202,13 +1158,11 @@ function flyIn() {
   setTimeout(() => moveCamTo(new THREE.Vector3(0, 0, 22), 1.0), 1500);
 }
 
-// presets
 document.getElementById('cam-front').addEventListener('click', () => moveCamTo(new THREE.Vector3(0, 0, 22)));
 document.getElementById('cam-top').addEventListener('click',   () => moveCamTo(new THREE.Vector3(0, 22, 0.001)));
 document.getElementById('cam-side').addEventListener('click',  () => moveCamTo(new THREE.Vector3(22, 0, 0)));
 document.getElementById('cam-flyIn').addEventListener('click', flyIn);
 
-// surface mode
 document.getElementById('btn-wireframe').addEventListener('click', () => {
   const cycle = ['textured', 'wireframe', 'clay'];
   surfaceMode = cycle[(cycle.indexOf(surfaceMode) + 1) % cycle.length];
@@ -1274,7 +1228,6 @@ window.addEventListener('resize', () => {
   composer.setSize(w, h);
 });
 
-// planet list
 let planetNames = [];
 
 async function buildPlanetList() {
@@ -1301,7 +1254,6 @@ async function buildPlanetList() {
   });
 }
 
-// keyboard nav
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
   if (planetNames.length === 0 || !currentData) return;
@@ -1333,7 +1285,7 @@ function animate() {
   if (sunUniforms) sunUniforms.time.value = time;
   if (moonPivot && autoRotate) moonPivot.rotation.y += delta * 0.5;
 
-  // atmospheric "breathing"
+  
   if (atmMesh && atmVisible) {
     const isGasGiant = currentData && (currentData.type === 'Gas Giant' || currentData.type === 'Ice Giant');
     const amp = isGasGiant ? 0.006 : 0.004;

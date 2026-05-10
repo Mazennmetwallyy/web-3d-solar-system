@@ -5,13 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Interactive 3D Solar System Explorer — explore all eight planets and the Sun in real-time 3D." />
   <title>Solar System Explorer</title>
-
-  <!-- Bootstrap 5 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
-  <!-- Custom styles -->
   <link rel="stylesheet" href="css/style.css" />
-
-  <!-- THREE.js import map -->
   <script type="importmap">
   {
     "imports": {
@@ -23,10 +18,8 @@
 </head>
 <body>
 
-  <!-- Skip link for keyboard / screen-reader navigation -->
   <a class="skip-link" href="#solar-canvas">Skip to 3D scene</a>
 
-  <!-- ── Loading Screen ──────────────────────────────────────────────── -->
   <div id="loading-screen" role="status" aria-label="Loading solar system">
     <div class="loading-title">☀ Solar System</div>
     <div class="loading-subtitle">Initialising 3D Scene…</div>
@@ -36,20 +29,17 @@
     <div class="loading-subtitle pulse" id="loading-msg">Loading planet textures…</div>
   </div>
 
-  <!-- ── Navigation ──────────────────────────────────────────────────── -->
   <nav class="navbar navbar-expand-lg fixed-top" aria-label="Main navigation">
     <div class="container-fluid px-3">
       <a class="navbar-brand" href="index.html" aria-label="Solar System Explorer home">
         <span class="brand-icon" aria-hidden="true">🪐</span>
         Solar System Explorer
       </a>
-
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
               data-bs-target="#navMenu" aria-controls="navMenu"
               aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse justify-content-end" id="navMenu">
         <ul class="navbar-nav gap-1" role="list">
           <li class="nav-item">
@@ -66,18 +56,14 @@
     </div>
   </nav>
 
-  <!-- ── THREE.js Canvas ─────────────────────────────────────────────── -->
   <main id="scene-wrapper" aria-label="3D Solar System Scene">
     <canvas id="solar-canvas" aria-label="Interactive 3D solar system. Use mouse to orbit. Click any planet to explore it."></canvas>
   </main>
 
-  <!-- ── Planet Name Labels (positioned by JS each frame) ────────────── -->
   <div id="planet-labels" aria-hidden="true"></div>
 
-  <!-- ── Hover Tooltip ───────────────────────────────────────────────── -->
   <div id="planet-tooltip" role="tooltip" aria-live="polite"></div>
 
-  <!-- ── Controls Panel (left) ───────────────────────────────────────── -->
   <button class="panel-toggle" id="panel-toggle-btn"
           aria-label="Toggle controls panel" title="Toggle controls">☰</button>
 
@@ -144,9 +130,7 @@
 
   </aside>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Solar System scene -->
   <script type="module" src="js/solar-system.js"></script>
 </body>
 </html>

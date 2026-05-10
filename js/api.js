@@ -1,4 +1,4 @@
-// api.js
+
 
 const API_BASE = 'php/api.php';
 
@@ -84,7 +84,6 @@ function fetchWithTimeout(url, ms = 2500) {
     .finally(() => clearTimeout(timer));
 }
 
-// get planets
 export async function fetchPlanets() {
   try {
     const res = await fetchWithTimeout(`${API_BASE}?action=planets`);
@@ -98,7 +97,6 @@ export async function fetchPlanets() {
   }
 }
 
-// get planet
 export async function fetchPlanet(name) {
   try {
     const res = await fetchWithTimeout(`${API_BASE}?action=planet&name=${encodeURIComponent(name)}`);
@@ -112,7 +110,6 @@ export async function fetchPlanet(name) {
   }
 }
 
-// fmt
 export function fmt(n) {
   if (n === null || n === undefined) return '—';
   return Number(n).toLocaleString('en-GB');

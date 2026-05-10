@@ -1,5 +1,4 @@
-// solar-system.js
-// TODO: rings could look better
+
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -7,11 +6,6 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { Lensflare, LensflareElement } from 'three/addons/objects/Lensflare.js';
-
-// sun shader
-// noise/fbm functions are basically iq's (inigo quilez) implementation from shadertoy
-// i adapted them for three.js - https://www.shadertoy.com/view/4dS3Wd
-// dont fully understand all the math but the hash constants are a standard trick
 
 const SUN_VERT = `
   varying vec2 vUv;
@@ -83,11 +77,6 @@ const SUN_FRAG = `
   }
 `;
 
-// atmosphere shader
-// fresnel-ish rim glow - dot(normal, viewDir) approaches 0 at silhouette edges
-// learned about this from learnopengl.com, adapted the glsl for three.js
-// the BackSide + AdditiveBlending combo took me a while to figure out
-
 const ATMO_VERT = `
   varying vec3 vNormal;
   varying vec3 vWorldPos;
@@ -111,10 +100,6 @@ const ATMO_FRAG = `
     gl_FragColor = vec4(glowColor, f * opacity);
   }
 `;
-
-// nebula background
-// same fbm approach as the sun shader, just different colour palette
-// tried a simple starfield first but it looked too plain against the dark background
 
 const NEBULA_VERT = `
   varying vec2 vUv;
@@ -171,7 +156,6 @@ const NEBULA_FRAG = `
   }
 `;
 
-// planet data
 const PLANET_DATA = [
   { name:'Mercury', r:1.5,  dist:10,  speed:4.74, rotSpeed: 0.017, colorA:'#777777', colorB:'#aaaaaa', emissive:'#3a3025', atmo:false },
   { name:'Venus',   r:2.2,  dist:16,  speed:3.50, rotSpeed:-0.004, colorA:'#b8832a', colorB:'#e8c56c', emissive:'#4a2c00', atmo:true, atmoColor:'#f0d888', atmoOp:0.60 },
@@ -203,11 +187,9 @@ controls.dampingFactor = 0.06;
 controls.minDistance = 12;
 controls.maxDistance = 700;
 
-// post processing
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 
-// bloom
 const bloomPass = new UnrealBloomPass(
   new THREE.Vector2(window.innerWidth, window.innerHeight),
   1.4, 0.50, 0.82
@@ -216,7 +198,6 @@ composer.addPass(bloomPass);
 
 let bloomEnabled = true;
 
-// lights
 const sunLight = new THREE.PointLight(0xfff6e0, 5.0, 900);
 scene.add(sunLight);
 
@@ -241,8 +222,6 @@ scene.add(new THREE.Mesh(
   })
 ));
 
-// asteroid belt
-// TODO: vary point sizes
 function makeAsteroidBelt() {
   const count = 2000;
   const pos = new Float32Array(count * 3);
@@ -268,7 +247,6 @@ function makeAsteroidBelt() {
   }));
 }
 
-// starfield
 function createStarfield() {
   const spread = 2800;
 
@@ -329,13 +307,13 @@ function makePlanetTex(colorA, colorB, banded = false, size = 256) {
   const ctx = c.getContext('2d');
 
   if (banded) {
-    // horizontal bands for gas giants (Jupiter, Saturn)
+    
     const numBands = 16;
     for (let i = 0; i < numBands; i++) {
       ctx.fillStyle = i % 2 === 0 ? colorA : colorB;
       ctx.fillRect(0, (i / numBands) * size, size, size / numBands);
     }
-    // darken edges slightly
+    
     const g = ctx.createLinearGradient(0, 0, size, 0);
     g.addColorStop(0, 'rgba(0,0,0,0.3)');
     g.addColorStop(0.5, 'rgba(0,0,0,0)');
@@ -349,7 +327,7 @@ function makePlanetTex(colorA, colorB, banded = false, size = 256) {
     g.addColorStop(1, colorA);
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, size, size);
-    // noise dots for surface texture
+    
     for (let i = 0; i < 2400; i++) {
       ctx.beginPath();
       ctx.arc(Math.random()*size, Math.random()*size, Math.random()*2.5+0.3, 0, Math.PI*2);
@@ -366,7 +344,7 @@ function makeFallbackEarth(size = 256) {
   const ctx = c.getContext('2d');
   ctx.fillStyle = '#1a5276';
   ctx.fillRect(0, 0, size, size/2);
-  // rough continent shapes
+  
   const blobs = [
     {x:.17,y:.33,rx:.10,ry:.28}, {x:.29,y:.28,rx:.07,ry:.20},
     {x:.51,y:.24,rx:.13,ry:.30}, {x:.67,y:.37,rx:.09,ry:.25},
@@ -384,11 +362,6 @@ function makeFallbackEarth(size = 256) {
   ctx.fillRect(0, size/2-10, size, 10);
   return new THREE.CanvasTexture(c);
 }
-
-// texture generators
-// originally these were just solid-colour spheres with some noise dots
-// then i added band patterns for jupiter/saturn, then got carried away with the others
-// ended up spending way too long on mercury craters and the mars canyon
 
 function getPlanetTexFor(name, colorA, colorB, size) {
   switch (name) {
@@ -510,7 +483,7 @@ function makeMarsTex(size) {
     bgrad.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=bgrad; ctx.beginPath(); ctx.arc(bx,by,br,0,Math.PI*2); ctx.fill();
   }
-  // Valles Marineris
+  
   { const STEPS=24;
     for(let i=0;i<=STEPS;i++){
       const t=i/STEPS;
@@ -527,13 +500,13 @@ function makeMarsTex(size) {
       ctx.restore();
     }
   }
-  // olympus mons
+  
   const omX=size*.18,omY=size*.36;
   const omg=ctx.createRadialGradient(omX,omY,0,omX,omY,size*.09);
   omg.addColorStop(0,'rgba(210,128,68,.45)'); omg.addColorStop(.4,'rgba(168,78,32,.25)'); omg.addColorStop(1,'rgba(0,0,0,0)');
   ctx.fillStyle=omg; ctx.beginPath(); ctx.arc(omX,omY,size*.09,0,Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.arc(omX,omY,size*.018,0,Math.PI*2); ctx.fillStyle='rgba(28,8,4,.62)'; ctx.fill();
-  // polar caps
+  
   const ng=ctx.createRadialGradient(size*.5,-size*.04,0,size*.5,0,size*.28);
   ng.addColorStop(0,'rgba(235,245,255,.95)'); ng.addColorStop(.55,'rgba(218,232,248,.58)'); ng.addColorStop(1,'rgba(0,0,0,0)');
   ctx.fillStyle=ng; ctx.fillRect(0,0,size,size*.25);
@@ -626,7 +599,6 @@ function makeNeptuneTex(size) {
   return new THREE.CanvasTexture(c);
 }
 
-// sun mesh
 const sunUniforms = { time: { value: 0.0 } };
 
 const sunMesh = new THREE.Mesh(
@@ -639,7 +611,6 @@ const sunMesh = new THREE.Mesh(
 );
 scene.add(sunMesh);
 
-// inner corona - warm orange ring close to the surface
 scene.add(new THREE.Mesh(
   new THREE.SphereGeometry(11.5, 48, 48),
   new THREE.ShaderMaterial({
@@ -654,7 +625,7 @@ scene.add(new THREE.Mesh(
     depthWrite: false, blending: THREE.AdditiveBlending,
   })
 ));
-// outer corona - bigger halo, reddish, gives the sun that glow when you zoom out
+
 scene.add(new THREE.Mesh(
   new THREE.SphereGeometry(16, 48, 48),
   new THREE.ShaderMaterial({
@@ -670,8 +641,6 @@ scene.add(new THREE.Mesh(
   })
 ));
 
-// Lensflare on the sun
-// I used canvas-generated textures as fallback in case the CDN is down
 const lensLight = new THREE.PointLight(0xffeecc, 0, 0);
 scene.add(lensLight);
 const lensflare = new Lensflare();
@@ -698,7 +667,7 @@ const lensflare = new Lensflare();
   lensflare.addElement(new LensflareElement(t1, 40,  0.75,new THREE.Color(0x8888ff)));
   lensflare.addElement(new LensflareElement(t1, 25,  0.9, new THREE.Color(0xffaa44)));
 
-  // try loading real texture from CDN - replaces canvas version if it works
+  
   texLoader.load(`${LENS_BASE}lensflare0.png`, tex => {
     lensflare.elements.length = 0;
     lensflare.addElement(new LensflareElement(tex, 700, 0,   new THREE.Color(0xffcc44)));
@@ -710,7 +679,6 @@ const lensflare = new Lensflare();
   lensLight.add(lensflare);
 })();
 
-// orbit rings - just line loops, toggle with the button
 const orbitLines = [];
 
 function addOrbitRing(radius) {
@@ -733,10 +701,9 @@ function addOrbitRing(radius) {
   return line;
 }
 
-// saturn rings
 function makeSaturnRings(r) {
-  const inner = r * 1.22;   // C-ring inner edge
-  const outer = r * 2.62;   // F-ring outer edge
+  const inner = r * 1.22;   
+  const outer = r * 2.62;   
 
   const ringCanvas = document.createElement('canvas');
   ringCanvas.width = 1024; ringCanvas.height = 1;
@@ -749,15 +716,15 @@ function makeSaturnRings(r) {
     rctx.fillRect(x0, 0, x1 - x0 + 1, 1);
   }
 
-  band(0.00, 0.28,  90, 72, 45, 0.30);  // C-ring
-  band(0.28, 0.50, 240, 220, 175, 0.95); // B-ring
+  band(0.00, 0.28,  90, 72, 45, 0.30);  
+  band(0.28, 0.50, 240, 220, 175, 0.95); 
   band(0.50, 0.62, 220, 195, 145, 0.88);
-  band(0.62, 0.68,  25,  18,  10, 0.05); // Cassini division
-  band(0.68, 0.88, 190, 165, 120, 0.72); // A-ring
-  band(0.82, 0.84,  15,  10,   5, 0.06); // Encke gap
+  band(0.62, 0.68,  25,  18,  10, 0.05); 
+  band(0.68, 0.88, 190, 165, 120, 0.72); 
+  band(0.82, 0.84,  15,  10,   5, 0.06); 
   band(0.84, 0.88, 178, 155, 108, 0.65);
   band(0.88, 0.92,   0,   0,   0, 0.00);
-  band(0.92, 1.00, 230, 215, 180, 0.22); // F-ring
+  band(0.92, 1.00, 230, 215, 180, 0.22); 
 
   for (let i = 0; i < 18; i++) {
     const sx = Math.random() * 900 + 20;
@@ -772,10 +739,10 @@ function makeSaturnRings(r) {
 
   const geo = new THREE.RingGeometry(inner, outer, 192, 4);
 
-  // remap uvs to radial distance
-  // three.js RingGeometry UVs are wrong for a radial texture by default
-  // found the fix here: https://stackoverflow.com/questions/69358650
-  // basically recompute u as normalised distance from inner to outer edge
+  
+  
+  
+  
   const uvs = geo.attributes.uv.array;
   const pos = geo.attributes.position.array;
   for (let i = 0; i < uvs.length / 2; i++) {
@@ -797,7 +764,6 @@ function makeSaturnRings(r) {
   return ring;
 }
 
-// hover glow
 const hoverGlow = new THREE.Mesh(
   new THREE.SphereGeometry(1, 32, 32),
   new THREE.ShaderMaterial({
@@ -825,7 +791,7 @@ let earthClouds = null;
 async function buildPlanets() {
   const fallbackEarth = makeFallbackEarth();
 
-  // cloud fallback
+  
   const fallbackCloud = (() => {
     const c = document.createElement('canvas');
     c.width = 256; c.height = 128;
@@ -920,10 +886,10 @@ async function buildPlanets() {
       pivot.add(earthClouds);
     }
 
-    // moons
+    
     const moonPivots = [];
     if (pd.hasMoon) {
-      // Earth's Moon (Luna)
+      
       const moonSubPivot = new THREE.Object3D();
       moonSubPivot.position.copy(mesh.position);
       const luna = new THREE.Mesh(
@@ -935,7 +901,7 @@ async function buildPlanets() {
       );
       luna.position.set(5.2, 0.4, 0);
       moonSubPivot.add(luna);
-      // faint orbit ring for the Moon
+      
       const lunaOrbitPts = 64;
       const lOrbPos = new Float32Array(lunaOrbitPts * 3);
       for (let i = 0; i < lunaOrbitPts; i++) {
@@ -973,7 +939,6 @@ async function buildPlanets() {
   }
 }
 
-// raycaster
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 const tooltip = document.getElementById('planet-tooltip');
@@ -1034,7 +999,6 @@ canvas.addEventListener('mouseleave', () => {
   hoveredMesh = null;
 });
 
-// web audio drone
 let audioCtx = null;
 let audioOn = false;
 
@@ -1061,7 +1025,7 @@ function startAudio() {
       osc.start();
     });
 
-    // lfo
+    
     const lfo = audioCtx.createOscillator();
     const lg  = audioCtx.createGain();
     lfo.type = 'sine';
@@ -1081,7 +1045,6 @@ function stopAudio() {
   audioOn = false;
 }
 
-// state
 let animSpeed = 1.0;
 let paused    = false;
 let wireframe = false;
@@ -1089,7 +1052,6 @@ let orbitsOn  = true;
 let labelsOn  = true;
 let elapsed   = 0;
 
-// reduced motion
 const reducedMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
 if (reducedMotionMQ.matches) {
   paused = true;
@@ -1106,7 +1068,6 @@ reducedMotionMQ.addEventListener('change', e => {
   }
 });
 
-// ui
 document.getElementById('speed-slider').addEventListener('input', e => {
   animSpeed = parseFloat(e.target.value);
   document.getElementById('speed-display').textContent = animSpeed.toFixed(1) + '×';
@@ -1201,7 +1162,6 @@ window.addEventListener('resize', () => {
   bloomPass.resolution.set(w, h);
 });
 
-// loading
 const loadScreen = document.getElementById('loading-screen');
 const loadMsg = document.getElementById('loading-msg');
 const messages = [
@@ -1223,7 +1183,6 @@ setTimeout(() => {
   setTimeout(() => loadScreen.style.display = 'none', 900);
 }, 2600);
 
-// animate
 const clock = new THREE.Clock();
 
 function animate() {
@@ -1259,9 +1218,8 @@ function animate() {
   bloomEnabled ? composer.render() : renderer.render(scene, camera);
 }
 
-// labels
 const labelContainer = document.getElementById('planet-labels');
-const planetLabels = [];   // { el, mesh }
+const planetLabels = [];   
 
 function buildLabels() {
   planets.forEach(p => {
