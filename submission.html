@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submission — Solar System Explorer</title>
+  <meta name="description" content="Web 3D Assignment 2026 submission page: ITS server URL, GitHub codebase, X3D models, and deeper understanding statement." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <nav class="navbar navbar-expand-lg fixed-top" aria-label="Main navigation">
+    <div class="container-fluid px-3">
+      <a class="navbar-brand" href="index.html">
+        Solar System Explorer
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navMenu" aria-controls="navMenu"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+        <ul class="navbar-nav gap-1">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="explore.html">Explore</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link active" href="submission.html" aria-current="page">Submission</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="about-hero container-xl" id="main-content">
+
+    <div class="text-center mb-5 fade-in-up">
+      <div class="about-section-title">Web 3D Assignment 2026</div>
+      <h1 class="display-4 fw-bold mb-3" style="color:var(--gold);">Submission</h1>
+      <p class="lead" style="color:var(--text-muted); max-width:620px; margin:0 auto;">
+        Required submission information for marking: server URL, codebase, models, and deeper understanding statement.
+      </p>
+    </div>
+
+    <div class="row g-4">
+
+      <div class="col-12">
+        <div class="about-card fade-in-up">
+          <div class="about-section-title">Required Links</div>
+          <h2 class="about-heading">Where to find the work</h2>
+          <ul style="color:var(--text-muted); font-size:0.92rem; line-height:2.2; padding-left:1.2rem;">
+            <li>
+              <strong>3D App Implementation – ITS Web Server URL:</strong><br />
+              <a href="http://users.sussex.ac.uk/~mm2505/" target="_blank" rel="noopener" style="color:var(--accent-primary);">http://users.sussex.ac.uk/~mm2505/</a>
+            </li>
+            <li>
+              <strong>GitHub 3D App Codebase URL:</strong><br />
+              <a href="https://github.com/Mazennmetwallyy/web-3d-solar-system" target="_blank" rel="noopener" style="color:var(--accent-primary);">https://github.com/Mazennmetwallyy/web-3d-solar-system</a>
+            </li>
+            <li>
+              <strong>GitHub VRML/X3D Models URL:</strong><br />
+              <a href="https://github.com/Mazennmetwallyy/web-3d-solar-system/tree/main/models/x3d" target="_blank" rel="noopener" style="color:var(--accent-primary);">https://github.com/Mazennmetwallyy/web-3d-solar-system/tree/main/models/x3d</a>
+            </li>
+            <li>
+              <strong>Blender Source File (.blend):</strong><br />
+              <a href="https://github.com/Mazennmetwallyy/web-3d-solar-system/blob/main/models/solar_system.blend" target="_blank" rel="noopener" style="color:var(--accent-primary);">models/solar_system.blend</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="about-card fade-in-up">
+          <div class="about-section-title">Deeper Understanding</div>
+          <h2 class="about-heading">Statement</h2>
+          <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.75;">
+            The project extends the laboratory tutorials in several deliberate directions, each chosen to move beyond
+            what was covered in the labs rather than to repeat it.
+          </p>
+
+          <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Custom GLSL Shaders</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.7;">
+            The planet surfaces, the Sun, and the atmospheric layers use custom vertex and fragment shaders written in
+            GLSL rather than relying on the default Three.js materials. This was used to produce a more believable Sun
+            with surface noise and a controlled fresnel-style atmospheric rim for Earth-like planets. Writing the
+            shaders meant working directly with uniforms, varyings, and the rendering pipeline, which is well beyond
+            the standard <code>MeshStandardMaterial</code> coverage in the labs.
+          </p>
+
+          <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Post-Processing Pipeline</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.7;">
+            The final image is composited through an <code>EffectComposer</code> with a <code>RenderPass</code> and a
+            tuned <code>UnrealBloomPass</code>. This gives the Sun and the brighter atmospheres a stylised glow that is
+            consistent with the chosen aesthetic. Balancing the bloom threshold, strength, and radius against the
+            renderer's tone mapping and exposure was one of the longest tuning efforts in the project.
+          </p>
+
+          <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">PHP Backend with a JSON API</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.7;">
+            Planet metadata is served from a small PHP backend that follows a model / controller split. A
+            <code>Planet</code> model class encapsulates the data, and <code>api.php</code> exposes a simple
+            action-based REST-style endpoint returning JSON. This goes beyond the procedural PHP shown in the lab work
+            and provides an honest, self-built API for the front end to consume.
+          </p>
+
+          <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Blender Workflow and Procedural Build</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.7;">
+            Rather than hand-placing every planet, a Python script
+            (<code>models/build_solar_system.py</code>) drives Blender to construct the scene, and a second script
+            (<code>generate_x3d.py</code>) emits the individual X3D model files. This made it possible to iterate on
+            scale, spacing, and material parameters quickly, and to keep the Three.js and X3D versions of each model in
+            sync.
+          </p>
+
+          <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Dual Web 3D Formats</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.7;">
+            The application uses Three.js for the live interactive scene, while a parallel set of X3D files is provided
+            under <code>models/x3d/</code> for each planet. This satisfies both routes offered by the brief and
+            demonstrates the underlying geometry independently of the runtime.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="about-card fade-in-up">
+          <div class="about-section-title">Testing</div>
+          <h2 class="about-heading">Feedback from testing and the impact on the site</h2>
+          <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.75;">
+            Testing was carried out across the development cycle and the feedback materially changed the final build.
+            The most useful findings are summarised below.
+          </p>
+
+          <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Loading screen hanging without a server</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.7;">
+            Opening <code>index.html</code> from the file system caused the loading screen to hang because module
+            imports and texture fetches require an HTTP context. The fix was to expose a clear loading state and to
+            document in the About page that the app must be served over HTTP. The ITS deployment was confirmed to load
+            correctly end-to-end.
+          </p>
+
+          <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Bloom intensity and exposure</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.7;">
+            Early bloom settings were visually dominant and washed out the planets. Iterative testing against the
+            target aesthetic led to lowered bloom strength, a higher threshold, and a corrected renderer exposure, so
+            that the Sun reads as bright without flooding the rest of the scene.
+          </p>
+
+          <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Alpha compounding on atmospheres</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.7;">
+            Layered transparent shells were compounding their alpha and producing visibly banded edges. The fix was to
+            adjust blending modes and to keep atmospheric shells to a controlled number of layers, which removed the
+            banding without losing the rim effect.
+          </p>
+
+          <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Responsive layout and accessibility</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.7;">
+            The Bootstrap layout was tested at mobile, tablet, and desktop widths and the navigation, hero, and 3D
+            canvas were adjusted so the canvas keeps a usable aspect ratio on small screens. A skip link, ARIA labels
+            on the navbar and canvas, and visible focus styles were added in response to keyboard-only testing.
+          </p>
+
+          <h3 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.4rem;">Cross-browser checks</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.7;">
+            The site was checked in current Chrome, Firefox, and Safari. WebGL behaviour was consistent; the only
+            adjustment needed was to make sure the import map and the post-processing add-ons resolved from the CDN in
+            every browser, which they do.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="about-card fade-in-up">
+          <div class="about-section-title">Statement of Originality</div>
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.75;">
+            This submission is my own work. Open-source code adapted into the project (for example the Three.js
+            post-processing examples and the Bootstrap framework) is used in accordance with its licence and is cited
+            in the About page references. The Blender models, the GLSL shader code, the PHP backend, the page layout,
+            and all custom JavaScript were authored by me as part of this assignment.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
